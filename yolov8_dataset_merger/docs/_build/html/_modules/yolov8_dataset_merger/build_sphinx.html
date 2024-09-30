@@ -170,6 +170,13 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">shutil</span> <span class="k">as</span> <span class="nn">sh</span>
+<div class="viewcode-block" id="default_case">
+<a class="viewcode-back" href="../../yolov8_dataset_merger.html#yolov8_dataset_merger.build_sphinx.default_case">[docs]</a>
+<span class="k">def</span> <span class="nf">default_case</span><span class="p">(</span><span class="n">output_dir</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">output_dir</span> <span class="o">==</span> <span class="s2">&quot;docs&quot;</span><span class="p">:</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">output_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output_dir</span></div>
+
 
 <div class="viewcode-block" id="clean_rst_files">
 <a class="viewcode-back" href="../../yolov8_dataset_merger.html#yolov8_dataset_merger.build_sphinx.clean_rst_files">[docs]</a>
@@ -204,6 +211,7 @@
 <span class="sd">        containing the &#39;_build&#39; directory.</span>
 <span class="sd">    :type output_directory: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">build_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;_build&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">build_directory</span><span class="p">):</span>
         <span class="n">item_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">build_directory</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
@@ -266,8 +274,8 @@
     <span class="n">args</span> <span class="o">+=</span> <span class="n">exclude_patterns</span>
     
     <span class="c1"># clean old content</span>
-    <span class="n">clean_rst_files</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
-    <span class="n">clean_build_directory</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+    <span class="n">clean_rst_files</span><span class="p">(</span><span class="n">default_case</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span>
+    <span class="n">clean_build_directory</span><span class="p">(</span><span class="n">default_case</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span>
 
     <span class="c1"># parse docstrings to reStructuredText files</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>    
@@ -308,9 +316,8 @@
     <span class="n">exclude_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;*test*&quot;</span><span class="p">,</span> <span class="s2">&quot;.vscode&quot;</span><span class="p">,</span> 
             <span class="s2">&quot;datasets_to_merge&quot;</span><span class="p">,</span> <span class="s2">&quot;merged_dataset*&quot;</span><span class="p">,</span> <span class="s2">&quot;runs&quot;</span><span class="p">,</span> 
             <span class="s2">&quot;instances_train2017.json&quot;</span><span class="p">,</span> <span class="s2">&quot;yolov8n-seg.pt&quot;</span> <span class="s2">&quot;yolov8n.pt&quot;</span><span class="p">]</span>
-    <span class="n">output_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\yolov8_dataset_merger\docs&quot;</span>
-    <span class="n">source_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\yolov8_dataset_merger&quot;</span>
-    <span class="n">build_documentation</span><span class="p">(</span><span class="n">exclude_patterns</span><span class="p">,</span><span class="n">output_dir</span><span class="p">,</span><span class="n">source_dir</span><span class="p">)</span>
+
+    <span class="n">build_documentation</span><span class="p">(</span><span class="n">exclude_patterns</span><span class="p">)</span>
 
 </pre></div>
 

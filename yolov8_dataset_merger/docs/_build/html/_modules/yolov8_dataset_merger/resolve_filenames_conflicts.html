@@ -131,9 +131,9 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 <span class="kn">import</span> <span class="nn">shutil</span> <span class="k">as</span> <span class="nn">sh</span>
 
-<span class="kn">import</span> <span class="nn">yaml_file_merger</span> 
-<span class="kn">import</span> <span class="nn">map_classes_number</span> 
-<span class="kn">import</span> <span class="nn">common_functions</span> <span class="k">as</span> <span class="nn">cf</span>
+<span class="kn">from</span> <span class="nn">yolov8_dataset_merger</span> <span class="kn">import</span> <span class="n">yaml_file_merger</span> 
+<span class="kn">from</span> <span class="nn">yolov8_dataset_merger</span> <span class="kn">import</span> <span class="n">map_classes_number</span> 
+<span class="kn">from</span> <span class="nn">yolov8_dataset_merger</span> <span class="kn">import</span> <span class="n">common_functions</span> <span class="k">as</span> <span class="n">cf</span>
 
 <span class="c1"># for debugging</span>
 <div class="viewcode-block" id="are_there_conflicts">
@@ -319,7 +319,7 @@
         <span class="c1"># datasets_paths if none was given</span>
         <span class="k">if</span> <span class="n">output_dataset_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
             <span class="n">output_dataset_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">datasets_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> 
+                            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path_to_folder_containing_datasets</span><span class="p">),</span> 
                             <span class="s2">&quot;merged_dataset&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span> <span class="n">output_dataset_path</span> <span class="o">=</span> <span class="n">output_dataset_path</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s2">&quot;merged_dataset&quot;</span>
         <span class="n">output_dataset_path</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">mkdir_unique</span><span class="p">(</span><span class="n">output_dataset_path</span><span class="p">)</span>

@@ -87,14 +87,12 @@ def resolve_filenames_conflicts_and_merge(path_list:list[str],
                                           base_directory=None):
     """
 Function Summary
-=======
+================
 Merges multiple directories that contain subdirectories named 
 "images" and "labels". The function resolves filename conflicts 
 by appending a suffix to conflicting ones. This is useful for 
 consolidating datasets while maintaining unique identifiers.
 
-Parameters
-==========
 :param path_list: A list of directories to be merged. Each directory 
     must contain subdirectories named "images" and "labels". Those 
     directories are typically "train", "test" and "val" or "valid", for 

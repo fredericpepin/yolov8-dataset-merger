@@ -53,8 +53,8 @@ from datetime import datetime
 import re 
 import yaml
 
-from . import common_functions as cf
-from . import yaml_file_merger as y
+from yolov8_dataset_merger import common_functions as cf
+from yolov8_dataset_merger import yaml_file_merger as y
 
 def replace_class_number_in_file(labels_directory: str,
                                  original_new_tuple_list: list[tuple], 
