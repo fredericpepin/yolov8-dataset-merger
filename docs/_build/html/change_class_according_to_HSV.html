@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>change_class_according_to_HSV module &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=4d045338"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="common_functions module" href="common_functions.html" />
+    <link rel="prev" title="build_sphinx module" href="build_sphinx.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">dataset_merger</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="background_images.html">background_images module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html">build_sphinx module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">change_class_according_to_HSV module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-summary">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change_class_according_to_HSV.change_class_based_on_color_all"><code class="docutils literal notranslate"><span class="pre">change_class_based_on_color_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change_class_according_to_HSV.check_tomato_ripeness"><code class="docutils literal notranslate"><span class="pre">check_tomato_ripeness()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change_class_according_to_HSV.draw_bounding_boxes"><code class="docutils literal notranslate"><span class="pre">draw_bounding_boxes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change_class_according_to_HSV.get_pixel_coordinates"><code class="docutils literal notranslate"><span class="pre">get_pixel_coordinates()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change_class_according_to_HSV.is_ripe_tomato"><code class="docutils literal notranslate"><span class="pre">is_ripe_tomato()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="common_functions.html">common_functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html">convert_segmentation_mask_to_bounding_box module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">examples module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html">map_classes_number module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html">resolve_filenames_conflicts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supervisely_json_to_yolov8.html">supervisely_json_to_yolov8 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test.html">test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yaml_file_merger.html">yaml_file_merger module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">dataset_merger</a></li>
+      <li class="breadcrumb-item active">change_class_according_to_HSV module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/change_class_according_to_HSV.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-change_class_according_to_HSV">
+<span id="change-class-according-to-hsv-module"></span><h1>change_class_according_to_HSV module<a class="headerlink" href="#module-change_class_according_to_HSV" title="Link to this heading"></a></h1>
+<section id="module-summary">
+<h2>Module Summary<a class="headerlink" href="#module-summary" title="Link to this heading"></a></h2>
+<p>Module meant to change fruit class based on the color of the detected
+fruit.</p>
+<p>Motivation: some datasets only identify tomatoes as such, without dif-
+ferentiating between ripe and unripe fruits. This is true for a spe-
+cial case, the TomatoOcclusion dataset, which addresses the problematic
+of occlusion of fruits by branches, leaves and other fruits, or a mix
+of all the latters.</p>
+<p>In order to be compatible with other quality datasets (like TomatoLaboro)
+the need arises to characterize the ripeness of Tomatoes.</p>
+<p>Based on the bounding box geometry and position, detect the presence of
+color spectrum (red) in a square box around center point of a bounding
+box (red is ripe). An enhanced approach would be to sample more regions
+in the bounding box, as it could be that a branch / leaf is present at
+middle point. But this also leads to the problem of a false detection
+of red of a ripe tomato behind an unripe one. Detection of partially
+hidden unripe tomatoes will also lead to problems if a red tomato
+overlaps the center of the former. Thus, the detection of occluded
+unripe tomato should be in my opinion left out. It is also less critical
+then the detection of ripe tomatoes in the bigger picture.
+Another stance could also be, falsely characterizing a unripe tomato
+is not critical, because unripe tomatoes continue to ripe also after
+harvest anyway. Therefore, the marginal phenomenon of characterizing
+an occluded unripe tomato as ripe because a red tomato overlaps
+ther region of interest at mid point doesn’t have big repercussions and
+is likely to rarely happen in a given dataset.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="change_class_according_to_HSV.change_class_based_on_color_all">
+<span class="sig-prename descclassname"><span class="pre">change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">change_class_based_on_color_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ripe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unripe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_center_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/change_class_according_to_HSV.html#change_class_based_on_color_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#change_class_according_to_HSV.change_class_based_on_color_all" title="Link to this definition"></a></dt>
+<dd><section id="function-summary">
+<h2>Function Summary<a class="headerlink" href="#function-summary" title="Link to this heading"></a></h2>
+<p>This function processes images of subdirectories “train, test, valid”
+in a given dataset directory to classify bounding boxes of tomatoes
+based on their ripeness by analyzing the color in a Region of Interest
+(ROI) around each bounding box’s center point.
+It updates the class IDs in the label files based on the ripeness
+of each detected tomato.</p>
+<p>The function reads all images and their corresponding label files
+in the specified directory, checks the ripeness of the tomatoes
+inside the bounding boxes using HSV color values, and updates
+the class ID in the label files accordingly. Additionally, it
+generates copies of the images with bounding boxes drawn on them
+for visual verification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param input_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the input directory containing folders
+of images and labels.</p>
+</dd>
+<dt class="field-even">type input_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param output_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the output directory where the modified
+label files and image copies will be saved.
+if value is left out, default behavior creates
+another directory in the parent dataset folder
+called “image_copies_with_bounding_boxes”</p>
+</dd>
+<dt class="field-even">type output_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param ripe<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class ID numberto assign to ripe tomatoes. Default is
+irrelevant, must be changed to fit a given structure in main .yaml
+file</p>
+</dd>
+<dt class="field-even">type ripe<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">param unripe<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class ID to assign to unripe tomatoes.
+Default is irrelevant, must be changed to fit a given structure
+in main .yaml file</p>
+</dd>
+<dt class="field-even">type unripe<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">param ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ratio that defines the size of the
+sampling region for checking ripeness,
+relative to the bounding box size.
+Default is 4.</p>
+</dd>
+<dt class="field-even">type ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>NoneType</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="change_class_according_to_HSV.check_tomato_ripeness">
+<span class="sig-prename descclassname"><span class="pre">change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">check_tomato_ripeness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_normalized</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_normalized</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_width_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_height_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_center_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/change_class_according_to_HSV.html#check_tomato_ripeness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#change_class_according_to_HSV.check_tomato_ripeness" title="Link to this definition"></a></dt>
+<dd><section id="id1">
+<h2>Functíon Summary<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Determines if a tomato within a bounding box in the image is ripe
+by evaluating the color within the bounding box in the HSV
+color space. The image is sampled around the center of the bounding
+box, and the HSV values of the region are analyzed to check for the
+presence of red, indicating ripeness.</p>
+<p>The function takes normalized coordinates for the center of the
+bounding box and normalized box dimensions, converts them to pixel
+coordinates, and samples a region around the center. The region is
+converted to the HSV color space, and the ripeness is checked by
+determining if any pixels fall within the red color range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param image<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Input image in BGR color space</p>
+</dd>
+<dt class="field-even">type image<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">param x_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized x-coordinate
+for the center of the bounding box.</p>
+</dd>
+<dt class="field-even">type x_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param y_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized y-coordinate
+for the center of the bounding box.</p>
+</dd>
+<dt class="field-even">type y_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param box_width_norm<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized width of the
+bounding box, as a proportion of the image
+width.</p>
+</dd>
+<dt class="field-even">type box_width_norm<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param box_height_norm<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized height of the
+bounding box, as a proportion of the image
+height.</p>
+</dd>
+<dt class="field-even">type box_height_norm<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ratio that determines the size of the
+sample region in relation to the box
+dimensions. The default value is 4,
+meaning the sample region will be 1/4th
+the size of the box.</p>
+</dd>
+<dt class="field-even">type ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A boolean indicating whether the tomato in the region is
+ripe (True) or unripe (False).</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="change_class_according_to_HSV.draw_bounding_boxes">
+<span class="sig-prename descclassname"><span class="pre">change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">draw_bounding_boxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_boxes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_center_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/change_class_according_to_HSV.html#draw_bounding_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#change_class_according_to_HSV.draw_bounding_boxes" title="Link to this definition"></a></dt>
+<dd><section id="id2">
+<h2>Function Summary<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>Draws bounding boxes around objects (tomatoes) in an image based on
+the provided bounding box coordinates, which are in a normalized
+format. In addition to the main bounding box, the function draws a
+smaller square box around the center of each object, sized proportionally
+to the original bounding box (longest edge). This smaller box is used
+for further analysis, such as checking for color or ripeness.</p>
+<p>green rectangles for the main bounding boxes and blue rectangles for
+the smaller boxes around the center points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param image<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The input image on which the bounding boxes will be
+drawn. This image is typically in BGR color space.</p>
+</dd>
+<dt class="field-even">type image<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">param bounding_boxes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of bounding boxes, where each bounding
+box is a list containing the class ID,
+normalized x and y center coordinates,
+and normalized width and height of the box.</p>
+</dd>
+<dt class="field-even">type bounding_boxes<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of lists of strings</p>
+</dd>
+<dt class="field-odd">param ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio that defines the size of the
+smaller box relative to the main bounding
+box. The default value is 4, meaning the
+smaller box will be 1/4th the size of the
+original bounding box.</p>
+</dd>
+<dt class="field-even">type ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A copy of the input image with the bounding boxes drawn on it.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The normalized coordinates for the bounding boxes are converted</dt><dd><p>to pixel coordinates based on the dimensions of the input image.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The smaller box around the center point is square, and its size</dt><dd><p>is determined by the larger of the two dimensions (width or height)
+of the main bounding box.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="change_class_according_to_HSV.get_pixel_coordinates">
+<span class="sig-prename descclassname"><span class="pre">change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">get_pixel_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/change_class_according_to_HSV.html#get_pixel_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#change_class_according_to_HSV.get_pixel_coordinates" title="Link to this definition"></a></dt>
+<dd><section id="id3">
+<h2>Function Summary<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>compute absolute geometry in pixel sizes out of normalized yolov8
+coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">param x_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type x_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param y_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type y_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param image_width<span class="colon">:</span></dt>
+<dd class="field-odd"><p>absolute image width</p>
+</dd>
+<dt class="field-even">type image_width<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param image_height<span class="colon">:</span></dt>
+<dd class="field-odd"><p>absolute image height</p>
+</dd>
+<dt class="field-even">type image_height<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple of (x_pixel, y_pixel), absolute x and y values in the
+coordinate system of the image</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[float]</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="change_class_according_to_HSV.is_ripe_tomato">
+<span class="sig-prename descclassname"><span class="pre">change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">is_ripe_tomato</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hsv_region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/change_class_according_to_HSV.html#is_ripe_tomato"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#change_class_according_to_HSV.is_ripe_tomato" title="Link to this definition"></a></dt>
+<dd><section id="id4">
+<h2>Function Summary<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>Determines if a given Region of Interest (hsv_region) contains any red
+pixels, indicating ripeness. In this case, hsv_region is a space
+containing the hsv values of each pixel in a given geometrical region.</p>
+<p>Each pixel in the HSV region is checked to see if its HSV values fall
+into either of these ranges. If a pixel’s values fall into one of these
+ranges, the corresponding mask will have a 1 (white) at that pixel’s
+location. If not, the mask will have a 0 (black).</p>
+<dl class="field-list simple">
+<dt class="field-odd">param hsv_region<span class="colon">:</span></dt>
+<dd class="field-odd"><p>image is first transformed to a color space with
+cv2.cvtColor method, and a subspace is created for the Region of
+Interest at center point, which is hsv_region. here, has 3 axes</p>
+</dd>
+<dt class="field-even">type hsv_region<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ripe (True) or unripe (False)</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="build_sphinx.html" class="btn btn-neutral float-left" title="build_sphinx module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="common_functions.html" class="btn btn-neutral float-right" title="common_functions module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

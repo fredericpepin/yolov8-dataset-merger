@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>background_images &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">background_images</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for background_images</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pycocotools.coco</span> <span class="kn">import</span> <span class="n">COCO</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Adapted from https://stackoverflow.com/a/62770484/8061030</span>
+<div class="viewcode-block" id="background_images">
+<a class="viewcode-back" href="../background_images.html#background_images.background_images">[docs]</a>
+<span class="k">def</span> <span class="nf">background_images</span><span class="p">(</span><span class="n">detector_classes</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">number_of_images</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span>
+                      <span class="n">output_dir</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                      <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                      <span class="s2">&quot;background_images&quot;</span><span class="p">)),</span>
+                      <span class="n">instance_train_json_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                      <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                      <span class="s2">&quot;instances_train2017.json&quot;</span><span class="p">))</span>
+                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">================</span>
+
+<span class="sd">Downloads background images from the COCO dataset, excluding those </span>
+<span class="sd">that contain specified classes. The function saves the images and </span>
+<span class="sd">blank label files in a specified directory. These background images </span>
+<span class="sd">are intended for use in object detection models where they are used </span>
+<span class="sd">as negative samples (images without objects of interest, or backgroun </span>
+<span class="sd">images).</span>
+
+<span class="sd">:param detector_classes: A list of classes to exclude from the </span>
+<span class="sd">background images. These are typically </span>
+<span class="sd">classes included in training, but in </span>
+<span class="sd">special cases, like in tomato detection </span>
+<span class="sd">where no class is excluded, the list </span>
+<span class="sd">can be empty.</span>
+<span class="sd">:type detector_classes: list[str]</span>
+<span class="sd">:param number_of_images: The number of background images to download. </span>
+<span class="sd">It is recommended to use between 0% and 10% </span>
+<span class="sd">background images relative to your dataset.</span>
+<span class="sd">:type number_of_images: int</span>
+<span class="sd">:param output_dir: The directory where the background images and </span>
+<span class="sd">corresponding blank label files will be saved. </span>
+<span class="sd">The default directory is &quot;./background_images&quot;.</span>
+<span class="sd">:type output_dir: str, optional</span>
+<span class="sd">:param instance_train_json_file : json file provided by coco on their </span>
+<span class="sd">website ( https://cocodataset.org/#download ) containing annotations</span>
+<span class="sd">of dataset. Path to this file. default value, place it in the </span>
+<span class="sd">script&#39;s directory</span>
+<span class="sd">:type output_dir: str, not really optional, must be changed if file is</span>
+<span class="sd">changed</span>
+<span class="sd">:return: None</span>
+<span class="sd">:rtype: NoneType</span>
+
+<span class="sd">Notes</span>
+<span class="sd">=====</span>
+<span class="sd">- The background images are saved to the `output_dir`, along with </span>
+<span class="sd">    corresponding blank `.txt` label files for each image.</span>
+<span class="sd">- The function uses the COCO API to retrieve image metadata and </span>
+<span class="sd">    downloads the images via their URLs.</span>
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">background_images([&quot;cat&quot;, &quot;dog&quot;], 100)</span>
+<span class="sd">This would download 100 images excluding those with &quot;cat&quot; and </span>
+<span class="sd">&quot;dog&quot;, and save them in the &quot;./background_images&quot; directory.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+    <span class="c1"># instantiate COCO specifying the annotations json path</span>
+    <span class="n">coco</span> <span class="o">=</span> <span class="n">COCO</span><span class="p">(</span><span class="n">instance_train_json_file</span><span class="p">)</span>
+
+    <span class="c1"># Get list of images to exclude based on DETECTOR_CLASSES</span>
+    <span class="c1"># Background images will not contain these.</span>
+    <span class="c1"># These should be classes included in training.</span>
+    <span class="n">exclude_categorie_ids</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">getCatIds</span><span class="p">(</span><span class="n">catNms</span><span class="o">=</span><span class="n">detector_classes</span><span class="p">)</span>
+
+    <span class="c1"># Get the corresponding image ids to exclude</span>
+    <span class="n">exclude_img_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">cat_id</span> <span class="ow">in</span> <span class="n">exclude_categorie_ids</span><span class="p">:</span>
+        <span class="n">exclude_img_ids</span> <span class="o">+=</span> <span class="n">coco</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">(</span><span class="n">catIds</span><span class="o">=</span><span class="n">cat_id</span><span class="p">)</span>
+
+    <span class="c1"># Remove duplicates</span>
+    <span class="n">exclude_img_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_img_ids</span><span class="p">)</span>
+
+    <span class="c1"># Get all image ids</span>
+    <span class="n">all_img_ids</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">()</span>
+
+    <span class="c1"># Remove img ids of classes that are included in training</span>
+    <span class="n">background_img_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">all_img_ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_img_ids</span><span class="p">)</span>
+
+    <span class="c1"># Get background image metadata</span>
+    <span class="n">background_images</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">loadImgs</span><span class="p">(</span><span class="n">background_img_ids</span><span class="p">)</span>
+
+    <span class="c1"># Create dirs</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span><span class="s2">&quot;images&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span><span class="s2">&quot;labels&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directories created&quot;</span><span class="p">)</span>
+    <span class="c1"># Save the images into a local folder</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">background_images</span><span class="p">[:</span><span class="n">number_of_images</span><span class="p">]:</span>
+        <span class="n">img_data</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="s2">&quot;coco_url&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">content</span>
+        
+        <span class="c1"># Save the image</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;images&quot;</span><span class="p">,</span> 
+                               <span class="n">image</span><span class="p">[</span><span class="s2">&quot;file_name&quot;</span><span class="p">]),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handler</span><span class="p">:</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">img_data</span><span class="p">)</span>
+
+        <span class="c1"># Save the corresponding blank label txt file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">,</span> 
+                            <span class="n">image</span><span class="p">[</span><span class="s2">&quot;file_name&quot;</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;txt&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handler</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;process done&quot;</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">background_images</span><span class="p">([],</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

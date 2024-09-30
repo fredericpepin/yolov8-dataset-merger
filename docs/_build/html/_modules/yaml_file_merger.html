@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yaml_file_merger &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yaml_file_merger</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yaml_file_merger</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: yaml_file_merger</span>
+<span class="sd">    :platform: Unix, Windows</span>
+<span class="sd">    :synopsis: A module for parsing and merging YAML files containing </span>
+<span class="sd">                class mappings.</span>
+<span class="sd">    .. function:: parse_yaml_file(yaml_file: str) -&gt; dict</span>
+<span class="sd">    .. function:: merge_yaml_files(yaml_files_paths_list: list[str], </span>
+<span class="sd">                                    output_path: str = None) -&gt; str</span>
+<span class="sd">    .. function:: merge_yaml_files_from_folder(folder_containing_datasets: str, </span>
+<span class="sd">                                                output_path: str = None) -&gt; str</span>
+
+<span class="sd">Module Summary</span>
+<span class="sd">===========</span>
+<span class="sd">This module provides functions to parse and merge YAML files that </span>
+<span class="sd">contain class mappings for different datasets. It ensures that improper </span>
+<span class="sd">formatting of yaml files is handled, remapping class names to unique </span>
+<span class="sd">integers and maintaining a count of the total classes. </span>
+<span class="sd">This functionality is especially useful when  combining datasets that </span>
+<span class="sd">may have conflicting or different class </span>
+<span class="sd">numbering.</span>
+
+<span class="sd">Functions</span>
+<span class="sd">=========</span>
+<span class="sd">- parse_yaml_file: Parses a YAML file, converting the &quot;names&quot; key </span>
+<span class="sd">  into a dictionary format and ensuring the file&#39;s content is valid </span>
+<span class="sd">  for further processing.</span>
+<span class="sd">  </span>
+<span class="sd">- merge_yaml_files: Merges multiple YAML files into a single YAML </span>
+<span class="sd">  file, remapping class names to unique class integers and updating </span>
+<span class="sd">  the total class count.</span>
+
+<span class="sd">- merge_yaml_files_from_folder: Merges all YAML files found within </span>
+<span class="sd">  subdirectories of a specified folder, compiling their contents and </span>
+<span class="sd">  remapping class names to unique integers.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<div class="viewcode-block" id="parse_yaml_file">
+<a class="viewcode-back" href="../yaml_file_merger.html#yaml_file_merger.parse_yaml_file">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_yaml_file</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Parses a YAML file by removing any tab characters and converting </span>
+<span class="sd">the names specified in the file into a dictionary format. This </span>
+<span class="sd">function ensures that the resulting content is valid for further </span>
+<span class="sd">processing.</span>
+
+<span class="sd">:param yaml_file: The file path to the YAML file that needs to be </span>
+<span class="sd">    parsed.</span>
+<span class="sd">:type yaml_file: str</span>
+<span class="sd">:return: A dictionary containing the parsed content of the YAML file. </span>
+<span class="sd">    The &quot;names&quot; key, if initially a list, is transformed into a </span>
+<span class="sd">    dictionary where the index is the key and the corresponding </span>
+<span class="sd">    name is the value.</span>
+<span class="sd">:rtype: dict</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; parsed_content = parse_yaml_file(&quot;path/to/yaml_file.yaml&quot;)</span>
+<span class="sd">&gt;&gt;&gt; print(parsed_content)</span>
+<span class="sd">{&#39;names&#39;: {0: &#39;class_1&#39;, 1: &#39;class_2&#39;, ...}}</span>
+
+<span class="sd">Notes</span>
+<span class="sd">=====</span>
+<span class="sd">- This function replaces tab characters with double spaces since </span>
+<span class="sd">    tabs are not allowed in YAML syntax.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="c1"># newline = os.linesep, for me on windows, got rid of empty lines. </span>
+    <span class="c1"># might need to be changed for unix systems?</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span><span class="n">newline</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="c1"># replace tabs with double spaces, remove trailing spaces, in each </span>
+    <span class="c1"># line. tabs are illegal in YAML</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+
+    <span class="c1"># make a string (stream format) out of list</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    
+    <span class="c1"># make a yaml format out of string  </span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="c1"># avoid list format for classes</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">],</span><span class="nb">list</span><span class="p">):</span>
+        <span class="n">temp_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># list index as key for dictionary, value as value</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span> <span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]):</span>
+            <span class="n">temp_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">content</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dict</span>
+
+    <span class="k">return</span> <span class="n">content</span></div>
+
+
+<div class="viewcode-block" id="merge_yaml_files">
+<a class="viewcode-back" href="../yaml_file_merger.html#yaml_file_merger.merge_yaml_files">[docs]</a>
+<span class="k">def</span> <span class="nf">merge_yaml_files</span><span class="p">(</span><span class="n">yaml_files_paths_list</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">output_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Merges multiple YAML files that contain class mappings into a single </span>
+<span class="sd">YAML file. This function ensures that class names are remapped to </span>
+<span class="sd">unique class integers and updates the total class count in the </span>
+<span class="sd">output.</span>
+
+
+<span class="sd">:param yaml_files_paths_list: A list of paths to the YAML files </span>
+<span class="sd">    that need to be merged.</span>
+<span class="sd">:type yaml_files_paths_list: list[str]</span>
+<span class="sd">:param output_path: The optional path where the merged YAML file </span>
+<span class="sd">    will be saved. If not provided, it defaults </span>
+<span class="sd">    to the parent directory of the first dataset.</span>
+<span class="sd">:type output_path: str, optional</span>
+<span class="sd">:return: The path to the merged YAML file that was created.</span>
+<span class="sd">:rtype: str</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; merged_path = merge_yaml_files([&quot;path/to/dataset1/data.yaml&quot;, </span>
+<span class="sd">...                                   &quot;path/to/dataset2/data.yaml&quot;])</span>
+<span class="sd">&gt;&gt;&gt; print(merged_path)</span>
+<span class="sd">&quot;path/to/parent/merged_data.yaml&quot;</span>
+
+<span class="sd">Notes</span>
+<span class="sd">=====</span>
+<span class="sd">- The function assumes that each YAML file contains a &quot;names&quot; key </span>
+<span class="sd">    mapping class integers to class names.</span>
+<span class="sd">- If a class name already exists in the output dictionary, it </span>
+<span class="sd">    will not be added again.</span>
+<span class="sd">- The total number of classes (&#39;nc&#39;) is updated in the output </span>
+<span class="sd">    YAML file based on the unique class names.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="c1"># initialize output dictionary</span>
+    <span class="n">yaml_dict_out</span><span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="c1"># loop over all data.yaml files to merge them</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">yaml_files_paths_list</span><span class="p">:</span>
+        
+        <span class="c1"># get yaml file content with the right format        </span>
+        <span class="n">yaml_dict</span> <span class="o">=</span> <span class="n">parse_yaml_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>        
+        
+        <span class="c1"># initialize output dictionary</span>
+        <span class="k">if</span> <span class="n">yaml_dict_out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">yaml_dict_out</span> <span class="o">=</span> <span class="n">yaml_dict</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># lists of class names and keys in the output dictionary</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">yaml_dict_out</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">yaml_dict_out</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+            
+            <span class="c1"># class names and keys in the file&#39;s dictionary</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># if this class name is already in the output dictionary</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="c1"># otherwhise, write a new class name at the last key + 1 </span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">new_key</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_key</span><span class="p">)</span>
+                    <span class="n">yaml_dict_out</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">][</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="c1"># update number of classes</span>
+    <span class="n">yaml_dict_out</span><span class="p">[</span><span class="s2">&quot;nc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yaml_dict_out</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]))</span>
+    
+    <span class="c1"># output data.yaml file. If none was given, will be put in parent </span>
+    <span class="c1"># dictionary of the first dataset</span>
+    <span class="k">if</span> <span class="n">output_path</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">output_path</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">yaml_files_paths_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                       <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> 
+                       <span class="o">+</span>  <span class="s2">&quot;merged_data.yaml&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;merged_data.yaml&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="n">yaml_dict_out</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">output_path</span></div>
+
+   
+<div class="viewcode-block" id="merge_yaml_files_from_folder">
+<a class="viewcode-back" href="../yaml_file_merger.html#yaml_file_merger.merge_yaml_files_from_folder">[docs]</a>
+<span class="k">def</span> <span class="nf">merge_yaml_files_from_folder</span><span class="p">(</span><span class="n">folder_containing_datasets</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">================</span>
+<span class="sd">Merges all YAML files found within subdirectories of a specified </span>
+<span class="sd">folder into a single YAML file. The function searches for the first </span>
+<span class="sd">YAML file in each dataset folder and compiles their contents while </span>
+<span class="sd">remapping class names to unique integers.</span>
+
+<span class="sd">:param folder_containing_datasets: The path to the folder that </span>
+<span class="sd">    contains multiple dataset subdirectories, each expected to </span>
+<span class="sd">    have a YAML file with class mappings.</span>
+<span class="sd">:type folder_containing_datasets: str</span>
+<span class="sd">:param output_path: The optional path where the merged YAML file </span>
+<span class="sd">    will be saved. If not provided, it defaults to the parent </span>
+<span class="sd">    directory, namely folder containing all subdatasets.</span>
+<span class="sd">:type output_path: str, optional</span>
+<span class="sd">:return: The path to the merged YAML file that was created.</span>
+<span class="sd">:rtype: str</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; merged_yaml_path = merge_yaml_files_from_folder(&quot;path/to/dataset_folder&quot;)</span>
+<span class="sd">&gt;&gt;&gt; print(merged_yaml_path)</span>
+<span class="sd">&quot;path/to/parent/merged_data.yaml&quot;</span>
+
+<span class="sd">Notes</span>
+<span class="sd">=====</span>
+<span class="sd">- The function expects each subdirectory to contain at least one </span>
+<span class="sd">    YAML file. If no YAML file is found, the corresponding folder </span>
+<span class="sd">    will be skipped.</span>
+<span class="sd">- The merged YAML file will contain unique class mappings from </span>
+<span class="sd">    all the input YAML files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="n">datasets_folders</span> <span class="o">=</span> <span class="p">[</span><span class="n">folder_containing_datasets</span> 
+                        <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> 
+                        <span class="o">+</span> <span class="n">folder</span> 
+                        <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_containing_datasets</span><span class="p">)]</span> 
+    <span class="n">yaml_file_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;.yaml$&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">datasets_folders</span><span class="p">:</span>
+        <span class="c1"># join directory name and yaml file name for a complete path</span>
+        <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span>
+                <span class="c1"># find first occurence of a file with .yaml extension</span>
+                <span class="nb">next</span><span class="p">((</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> 
+                      <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">yaml_file_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">merge_yaml_files</span><span class="p">(</span><span class="n">yaml_file_list</span><span class="p">,</span><span class="n">output_path</span><span class="p">)</span></div>
+
+    
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

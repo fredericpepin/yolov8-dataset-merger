@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>supervisely_json_to_yolov8 &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">supervisely_json_to_yolov8</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for supervisely_json_to_yolov8</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: supervisely_json_to_yolov8</span>
+<span class="sd">    :platform: Unix, Windows</span>
+<span class="sd">    :synopsis: Module for converting supervisely JSON annotation</span>
+<span class="sd">    to bounding boxes in YOLO format.</span>
+<span class="sd">    .. function: </span>
+<span class="sd">        json_syntax_to_yolov8_file(file_path: str) -&gt; list[str]</span>
+<span class="sd">    .. function: </span>
+<span class="sd">        json_syntax_to_yolov8_all(input_dir: str, output_dir: str) -&gt; None</span>
+<span class="sd">Module Summary</span>
+<span class="sd">=======</span>
+
+<span class="sd">module containing functions to transform JSON Supervisely annotations of</span>
+<span class="sd">a dataset to YOLOv8 annotations.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span> <span class="k">as</span> <span class="nn">sh</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">all_classes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">all_classes_map_tuple_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="rund">
+<a class="viewcode-back" href="../supervisely_json_to_yolov8.html#supervisely_json_to_yolov8.rund">[docs]</a>
+<span class="k">def</span> <span class="nf">rund</span><span class="p">(</span><span class="n">number</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">digits</span> <span class="o">=</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="c1"># can call the rund function without each time specifying a new </span>
+    <span class="c1"># number of digits after comma. So by defining &quot;digits&quot; as optional</span>
+    <span class="c1"># input with default value, you define a precision for the whole</span>
+    <span class="c1"># file</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">digits</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="json_syntax_to_yolov8_file">
+<a class="viewcode-back" href="../supervisely_json_to_yolov8.html#supervisely_json_to_yolov8.json_syntax_to_yolov8_file">[docs]</a>
+<span class="k">def</span> <span class="nf">json_syntax_to_yolov8_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+
+<span class="sd">takes a supervisely file (JSON format), parses data contained in file,</span>
+<span class="sd">and transforms to a yolov8 format.</span>
+
+<span class="sd">:param file_path:</span>
+<span class="sd">:type file_path: str</span>
+<span class="sd">:return: list of all bounding boxes, each bounding box is a string with</span>
+<span class="sd">    format &#39;&lt;class ID&gt; &lt;normalized x_center&gt; &lt;normalized y_center&gt; </span>
+<span class="sd">    &lt;normalized box width&gt; &lt;normalized box height&gt;\\n&#39; </span>
+<span class="sd">:rtype: list[str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">dic</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">global</span> <span class="n">all_classes</span> 
+    <span class="k">global</span> <span class="n">all_classes_map_tuple_list</span>
+    
+    <span class="n">bounding_boxes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">width_picture</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;width&quot;</span><span class="p">])</span>
+    <span class="n">height_picture</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;height&quot;</span><span class="p">])</span>
+    
+    <span class="c1"># retrieving relevant info from json file</span>
+    <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">[</span><span class="s2">&quot;objects&quot;</span><span class="p">]:</span>
+        <span class="n">object_class</span> <span class="o">=</span> <span class="nb">object</span><span class="p">[</span><span class="s2">&quot;classTitle&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">object_class</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_classes</span><span class="p">:</span> 
+            <span class="n">all_classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">object_class</span><span class="p">)</span>
+        <span class="n">object_class</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">all_classes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">object_class</span><span class="p">))</span>
+        
+        <span class="c1"># top left and bottom right points of bounding box</span>
+        <span class="p">(</span><span class="n">top_left_x</span><span class="p">,</span> <span class="n">top_left_y</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> 
+                                    <span class="k">for</span> <span class="n">value</span> 
+                                    <span class="ow">in</span> <span class="nb">object</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">][</span><span class="s2">&quot;exterior&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="p">(</span><span class="n">bottom_right_x</span><span class="p">,</span> <span class="n">bottom_right_y</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> 
+                                            <span class="k">for</span> <span class="n">value</span> 
+                                            <span class="ow">in</span> <span class="nb">object</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">][</span><span class="s2">&quot;exterior&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+        
+        <span class="c1"># center positioning offset </span>
+        <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span><span class="n">top_left_x</span><span class="p">,</span><span class="n">bottom_right_x</span><span class="p">)</span> 
+                        <span class="k">if</span> <span class="n">top_left_x</span> <span class="o">&lt;=</span> <span class="n">bottom_right_x</span> 
+                        <span class="k">else</span> <span class="p">(</span><span class="n">bottom_right_x</span><span class="p">,</span> <span class="n">top_left_x</span><span class="p">)</span>
+                        <span class="p">)</span>  
+        <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span><span class="n">top_left_y</span><span class="p">,</span> <span class="n">bottom_right_y</span><span class="p">)</span> 
+                        <span class="k">if</span> <span class="n">top_left_y</span> <span class="o">&lt;=</span> <span class="n">bottom_right_y</span> 
+                        <span class="k">else</span> <span class="p">(</span><span class="n">bottom_right_y</span><span class="p">,</span> <span class="n">top_left_y</span><span class="p">)</span>
+                        <span class="p">)</span>
+        
+        <span class="c1"># normalized width and center coordinates of bounding box</span>
+        <span class="n">width_norm</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">width_picture</span>
+        <span class="n">height_norm</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">height_picture</span>
+        <span class="n">x_center_norm</span> <span class="o">=</span> <span class="p">((</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">width_picture</span>
+        <span class="n">y_center_norm</span> <span class="o">=</span> <span class="p">((</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">height_picture</span>
+
+        <span class="c1"># building string to write to yolo annotation file for one buil-</span>
+        <span class="c1"># ding box and appending it to the list of all bounding boxes</span>
+        <span class="c1"># of one file</span>
+        <span class="n">bounding_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">object_class</span><span class="p">,</span> 
+                                        <span class="nb">str</span><span class="p">(</span><span class="n">rund</span><span class="p">(</span><span class="n">x_center_norm</span><span class="p">)),</span>
+                                        <span class="nb">str</span><span class="p">(</span><span class="n">rund</span><span class="p">(</span><span class="n">y_center_norm</span><span class="p">)),</span>
+                                        <span class="nb">str</span><span class="p">(</span><span class="n">rund</span><span class="p">(</span><span class="n">width_norm</span><span class="p">)),</span> 
+                                        <span class="nb">str</span><span class="p">(</span><span class="n">rund</span><span class="p">(</span><span class="n">height_norm</span><span class="p">))])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bounding_boxes</span></div>
+
+
+<div class="viewcode-block" id="json_syntax_to_yolov8_all">
+<a class="viewcode-back" href="../supervisely_json_to_yolov8.html#supervisely_json_to_yolov8.json_syntax_to_yolov8_all">[docs]</a>
+<span class="k">def</span> <span class="nf">json_syntax_to_yolov8_all</span><span class="p">(</span><span class="n">input_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+
+<span class="sd">call the parsing function on all files contained in a given input direc-</span>
+<span class="sd">tory, write the YOLOv8 formatted data to a .txt file in output directory</span>
+<span class="sd"> </span>
+<span class="sd">:param input_dir: path to directory containing supervisely annotations</span>
+<span class="sd">:type input_dir: str</span>
+<span class="sd">:param output_dir: (optional) path to output directory, where to store</span>
+<span class="sd">    the yolov8 annotations. default behavior, creates a directory</span>
+<span class="sd">    called &#39;yolov8_annoations&#39; in the parent directory of input_dir </span>
+<span class="sd">:type output_dir: str</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    
+    <span class="c1"># if an output directory is not given, default behavior, come back</span>
+    <span class="c1"># one directory in tree and make an output directory called</span>
+    <span class="c1"># &quot;yolov8_annotations&quot;</span>
+    <span class="k">if</span> <span class="n">output_dir</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">input_dir</span><span class="p">),</span>
+                                  <span class="s2">&quot;yolov8_annotations&quot;</span><span class="p">)</span>
+    <span class="c1"># overwriting output_dictionary if it already exists</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_dir</span><span class="p">):</span>  <span class="n">sh</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span> 
+    
+    <span class="c1"># loop through directory&#39;s content and calling </span>
+    <span class="c1"># parsing function on each file.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">input_dir</span><span class="p">)):</span>
+        <span class="c1"># only if it is a .json file</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">):</span>
+            <span class="n">bounding_boxes</span> <span class="o">=</span> <span class="n">json_syntax_to_yolov8_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> 
+            
+            <span class="c1"># write yolov8 bounding boxes list to a new .txt file in </span>
+            <span class="c1"># the output directory</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.txt&quot;</span><span class="p">),</span>
+                      <span class="s2">&quot;w&quot;</span><span class="p">,</span> 
+                      <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bounding_box</span><span class="p">)</span> <span class="k">for</span> <span class="n">bounding_box</span> <span class="ow">in</span> <span class="n">bounding_boxes</span><span class="p">]</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">input_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;path_to_directory_containing_supervisely_annotations&quot;</span>
+        <span class="c1"># output_dir = r&quot;path_to_desired_output_directory&quot; # optional</span>
+        <span class="n">json_syntax_to_yolov8_all</span><span class="p">(</span><span class="n">input_dir</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+
+    
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

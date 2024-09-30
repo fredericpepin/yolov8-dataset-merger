@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>change_class_according_to_HSV &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">change_class_according_to_HSV</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for change_class_according_to_HSV</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: change_class_according_to_HSV</span>
+<span class="sd">    :platform: Unix, Windows</span>
+<span class="sd">    :synopsis: modify labels classes IDs by determining ripeness of </span>
+<span class="sd">                tomato with its color.</span>
+<span class="sd">    .. function: get_pixel_coordinates(x_normalized: float,</span>
+<span class="sd">                            y_normalized: float, </span>
+<span class="sd">                            image_width: float, </span>
+<span class="sd">                            image_height: float) -&gt; tuple[float]</span>
+<span class="sd">    .. function: is_ripe_tomato(hsv_region: np.ndarray) -&gt; bool</span>
+<span class="sd">    .. function:: check_tomato_ripeness(image: np.ndarray, </span>
+<span class="sd">                                        x_normalized: float, </span>
+<span class="sd">                                        y_normalized: float, </span>
+<span class="sd">                                        box_width_norm: float, </span>
+<span class="sd">                                        box_height_norm: float, </span>
+<span class="sd">                                        ratio_center_box: int = 4) </span>
+<span class="sd">                                        -&gt; bool</span>
+<span class="sd">    .. function:: change_class_based_on_color_all(input_dir: str, </span>
+<span class="sd">                                                    output_dir: str, </span>
+<span class="sd">                                                    ripe: int = 2, </span>
+<span class="sd">                                                    unripe: int = 4, </span>
+<span class="sd">                                                    ratio_center_box: int = 4) </span>
+<span class="sd">                                                    -&gt; None</span>
+<span class="sd">    .. function:: draw_bounding_boxes(image: np.ndarray, </span>
+<span class="sd">                                    bounding_boxes: list[list[str]], </span>
+<span class="sd">                                    ratio_center_box: int = 4) </span>
+<span class="sd">                                    -&gt; np.ndarray</span>
+<span class="sd">Module Summary</span>
+<span class="sd">==============</span>
+
+<span class="sd">Module meant to change fruit class based on the color of the detected </span>
+<span class="sd">fruit.</span>
+
+<span class="sd">Motivation: some datasets only identify tomatoes as such, without dif-</span>
+<span class="sd">ferentiating between ripe and unripe fruits. This is true for a spe-</span>
+<span class="sd">cial case, the TomatoOcclusion dataset, which addresses the problematic</span>
+<span class="sd">of occlusion of fruits by branches, leaves and other fruits, or a mix </span>
+<span class="sd">of all the latters. </span>
+
+<span class="sd">In order to be compatible with other quality datasets (like TomatoLaboro)</span>
+<span class="sd">the need arises to characterize the ripeness of Tomatoes. </span>
+
+
+<span class="sd">Based on the bounding box geometry and position, detect the presence of</span>
+<span class="sd">color spectrum (red) in a square box around center point of a bounding </span>
+<span class="sd">box (red is ripe). An enhanced approach would be to sample more regions</span>
+<span class="sd">in the bounding box, as it could be that a branch / leaf is present at </span>
+<span class="sd">middle point. But this also leads to the problem of a false detection</span>
+<span class="sd">of red of a ripe tomato behind an unripe one. Detection of partially</span>
+<span class="sd">hidden unripe tomatoes will also lead to problems if a red tomato </span>
+<span class="sd">overlaps the center of the former. Thus, the detection of occluded </span>
+<span class="sd">unripe tomato should be in my opinion left out. It is also less critical</span>
+<span class="sd">then the detection of ripe tomatoes in the bigger picture.</span>
+<span class="sd">Another stance could also be, falsely characterizing a unripe tomato </span>
+<span class="sd">is not critical, because unripe tomatoes continue to ripe also after</span>
+<span class="sd">harvest anyway. Therefore, the marginal phenomenon of characterizing </span>
+<span class="sd">an occluded unripe tomato as ripe because a red tomato overlaps </span>
+<span class="sd">ther region of interest at mid point doesn&#39;t have big repercussions and</span>
+<span class="sd">is likely to rarely happen in a given dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span> <span class="k">as</span> <span class="nn">sh</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">common_functions</span> <span class="k">as</span> <span class="nn">udf</span>
+
+<span class="c1"># Convert normalized coordinates to pixel values</span>
+<div class="viewcode-block" id="get_pixel_coordinates">
+<a class="viewcode-back" href="../change_class_according_to_HSV.html#change_class_according_to_HSV.get_pixel_coordinates">[docs]</a>
+<span class="k">def</span> <span class="nf">get_pixel_coordinates</span><span class="p">(</span><span class="n">x_normalized</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y_normalized</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                          <span class="n">image_width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                          <span class="n">image_height</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">================</span>
+
+<span class="sd">compute absolute geometry in pixel sizes out of normalized yolov8 </span>
+<span class="sd">coordinates</span>
+
+<span class="sd">:param x_normalized: </span>
+<span class="sd">:type x_normalized: float</span>
+<span class="sd">:param y_normalized: </span>
+<span class="sd">:type y_normalized: float</span>
+<span class="sd">:param image_width: absolute image width</span>
+<span class="sd">:type image_width: float</span>
+<span class="sd">:param image_height: absolute image height</span>
+<span class="sd">:type image_height: float</span>
+<span class="sd">:return: tuple of (x_pixel, y_pixel), absolute x and y values in the</span>
+<span class="sd">    coordinate system of the image</span>
+<span class="sd">:rtype: tuple[float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_pixel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_normalized</span> <span class="o">*</span> <span class="n">image_width</span><span class="p">)</span>
+    <span class="n">y_pixel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y_normalized</span> <span class="o">*</span> <span class="n">image_height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x_pixel</span><span class="p">,</span> <span class="n">y_pixel</span></div>
+
+
+<span class="c1"># Define a function to check if a given color is red (ripe tomato) with </span>
+<span class="c1"># wider ranges</span>
+<div class="viewcode-block" id="is_ripe_tomato">
+<a class="viewcode-back" href="../change_class_according_to_HSV.html#change_class_according_to_HSV.is_ripe_tomato">[docs]</a>
+<span class="k">def</span> <span class="nf">is_ripe_tomato</span><span class="p">(</span><span class="n">hsv_region</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">Function Summary</span>
+<span class="sd">================</span>
+
+<span class="sd">Determines if a given Region of Interest (hsv_region) contains any red </span>
+<span class="sd">pixels, indicating ripeness. In this case, hsv_region is a space </span>
+<span class="sd">containing the hsv values of each pixel in a given geometrical region.</span>
+
+<span class="sd">Each pixel in the HSV region is checked to see if its HSV values fall</span>
+<span class="sd">into either of these ranges. If a pixel&#39;s values fall into one of these</span>
+<span class="sd">ranges, the corresponding mask will have a 1 (white) at that pixel&#39;s </span>
+<span class="sd">location. If not, the mask will have a 0 (black).</span>
+
+<span class="sd">:param hsv_region: image is first transformed to a color space with </span>
+<span class="sd">    cv2.cvtColor method, and a subspace is created for the Region of </span>
+<span class="sd">    Interest at center point, which is hsv_region. here, has 3 axes</span>
+<span class="sd">:type hsv_region: np.array </span>
+<span class="sd">:return: ripe (True) or unripe (False)</span>
+<span class="sd">:rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert the region to a NumPy array</span>
+    <span class="n">hsv_region</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hsv_region</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="c1"># Define the red color range in HSV</span>
+    <span class="c1">#lower red  [hue, saturation, value]</span>
+    <span class="n">lower_red</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+    <span class="n">upper_red</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">])</span>
+
+    <span class="c1">#upper red [hue, saturation, value]</span>
+    <span class="n">lower_red2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">170</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+    <span class="n">upper_red2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">180</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">])</span>
+
+    
+    <span class="c1"># Check if the pixels in region falls within the red ranges for hue</span>
+    <span class="c1"># saturation and value</span>
+    <span class="n">mask1</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">hsv_region</span><span class="p">,</span> <span class="n">lower_red</span><span class="p">,</span> <span class="n">upper_red</span><span class="p">)</span>
+    <span class="n">mask2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">hsv_region</span><span class="p">,</span> <span class="n">lower_red2</span><span class="p">,</span> <span class="n">upper_red2</span><span class="p">)</span>
+    
+    <span class="c1"># If either mask has significant values, it&#39;s ripe</span>
+    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">countNonZero</span><span class="p">(</span><span class="n">mask1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">cv2</span><span class="o">.</span><span class="n">countNonZero</span><span class="p">(</span><span class="n">mask2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="check_tomato_ripeness">
+<a class="viewcode-back" href="../change_class_according_to_HSV.html#change_class_according_to_HSV.check_tomato_ripeness">[docs]</a>
+<span class="k">def</span> <span class="nf">check_tomato_ripeness</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x_normalized</span><span class="p">,</span> <span class="n">y_normalized</span><span class="p">,</span> 
+                          <span class="n">box_width_norm</span><span class="p">,</span> <span class="n">box_height_norm</span><span class="p">,</span>
+                          <span class="n">ratio_center_box</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functíon Summary</span>
+<span class="sd">================</span>
+
+<span class="sd">Determines if a tomato within a bounding box in the image is ripe </span>
+<span class="sd">by evaluating the color within the bounding box in the HSV </span>
+<span class="sd">color space. The image is sampled around the center of the bounding </span>
+<span class="sd">box, and the HSV values of the region are analyzed to check for the </span>
+<span class="sd">presence of red, indicating ripeness.</span>
+
+<span class="sd">The function takes normalized coordinates for the center of the </span>
+<span class="sd">bounding box and normalized box dimensions, converts them to pixel </span>
+<span class="sd">coordinates, and samples a region around the center. The region is </span>
+<span class="sd">converted to the HSV color space, and the ripeness is checked by </span>
+<span class="sd">determining if any pixels fall within the red color range.</span>
+
+<span class="sd">:param image: Input image in BGR color space</span>
+<span class="sd">:type image: np.ndarray</span>
+<span class="sd">:param x_normalized: Normalized x-coordinate </span>
+<span class="sd">    for the center of the bounding box.</span>
+<span class="sd">:type x_normalized: float</span>
+<span class="sd">:param y_normalized: Normalized y-coordinate </span>
+<span class="sd">    for the center of the bounding box.</span>
+<span class="sd">:type y_normalized: float</span>
+<span class="sd">:param box_width_norm: Normalized width of the </span>
+<span class="sd">    bounding box, as a proportion of the image </span>
+<span class="sd">    width.</span>
+<span class="sd">:type box_width_norm: float</span>
+<span class="sd">:param box_height_norm: Normalized height of the </span>
+<span class="sd">    bounding box, as a proportion of the image </span>
+<span class="sd">    height.</span>
+<span class="sd">:type box_height_norm: float</span>
+<span class="sd">:param ratio_center_box: Ratio that determines the size of the </span>
+<span class="sd">    sample region in relation to the box </span>
+<span class="sd">    dimensions. The default value is 4, </span>
+<span class="sd">    meaning the sample region will be 1/4th </span>
+<span class="sd">    the size of the box.</span>
+<span class="sd">:type ratio_center_box: int, optional</span>
+<span class="sd">:return: A boolean indicating whether the tomato in the region is </span>
+<span class="sd">            ripe (True) or unripe (False).</span>
+<span class="sd">:rtype: bool</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="c1"># Get image dimensions</span>
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="c1"># Convert normalized coordinates to pixel indices for center and box dimensions</span>
+    <span class="n">x_center_pixel</span><span class="p">,</span> <span class="n">y_center_pixel</span> <span class="o">=</span> <span class="n">get_pixel_coordinates</span><span class="p">(</span><span class="n">x_normalized</span><span class="p">,</span>
+                                                           <span class="n">y_normalized</span><span class="p">,</span>
+                                                           <span class="n">width</span><span class="p">,</span> 
+                                                           <span class="n">height</span><span class="p">)</span>
+    <span class="n">box_width_pixel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">box_width_norm</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">box_height_pixel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">box_height_norm</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span>
+    <span class="n">box_edge_pixel</span> <span class="o">=</span> <span class="p">(</span><span class="n">box_width_pixel</span> 
+                      <span class="k">if</span> <span class="n">box_width_pixel</span> <span class="o">&gt;=</span> <span class="n">box_height_pixel</span>
+                      <span class="k">else</span> <span class="n">box_height_pixel</span><span class="p">)</span>
+    
+    <span class="c1"># Define the region around the center of the bounding box to sample from</span>
+    <span class="n">x_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_center_pixel</span> <span class="o">-</span> <span class="n">box_edge_pixel</span> <span class="o">//</span> <span class="n">ratio_center_box</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">y_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_center_pixel</span> <span class="o">-</span> <span class="n">box_edge_pixel</span> <span class="o">//</span> <span class="n">ratio_center_box</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">x_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_center_pixel</span> <span class="o">+</span> <span class="n">box_edge_pixel</span> <span class="o">//</span> <span class="n">ratio_center_box</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">y_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y_center_pixel</span> <span class="o">+</span> <span class="n">box_edge_pixel</span> <span class="o">//</span> <span class="n">ratio_center_box</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+    <span class="c1"># Convert image to HSV color space</span>
+    <span class="n">hsv_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2HSV</span><span class="p">)</span>
+    
+    <span class="c1"># Get the HSV values in the bounding box region</span>
+    <span class="n">hsv_region</span> <span class="o">=</span> <span class="n">hsv_image</span><span class="p">[</span><span class="n">y_start</span><span class="p">:</span><span class="n">y_end</span><span class="p">,</span> <span class="n">x_start</span><span class="p">:</span><span class="n">x_end</span><span class="p">]</span>
+    
+    <span class="c1"># Check if the region is ripe</span>
+    <span class="k">return</span> <span class="n">is_ripe_tomato</span><span class="p">(</span><span class="n">hsv_region</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="change_class_based_on_color_all">
+<a class="viewcode-back" href="../change_class_according_to_HSV.html#change_class_according_to_HSV.change_class_based_on_color_all">[docs]</a>
+<span class="k">def</span> <span class="nf">change_class_based_on_color_all</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                    <span class="n">ripe</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                                    <span class="n">unripe</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                                    <span class="n">ratio_center_box</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">================</span>
+
+<span class="sd">This function processes images of subdirectories &quot;train, test, valid&quot;</span>
+<span class="sd">in a given dataset directory to classify bounding boxes of tomatoes </span>
+<span class="sd">based on their ripeness by analyzing the color in a Region of Interest </span>
+<span class="sd">(ROI) around each bounding box&#39;s center point. </span>
+<span class="sd">It updates the class IDs in the label files based on the ripeness </span>
+<span class="sd">of each detected tomato.</span>
+
+<span class="sd">The function reads all images and their corresponding label files </span>
+<span class="sd">in the specified directory, checks the ripeness of the tomatoes </span>
+<span class="sd">inside the bounding boxes using HSV color values, and updates </span>
+<span class="sd">the class ID in the label files accordingly. Additionally, it </span>
+<span class="sd">generates copies of the images with bounding boxes drawn on them </span>
+<span class="sd">for visual verification.</span>
+
+<span class="sd">:param input_dir: Path to the input directory containing folders </span>
+<span class="sd">    of images and labels.</span>
+<span class="sd">:type input_dir: str</span>
+<span class="sd">:param output_dir: Path to the output directory where the modified </span>
+<span class="sd">    label files and image copies will be saved.</span>
+<span class="sd">    if value is left out, default behavior creates</span>
+<span class="sd">    another directory in the parent dataset folder</span>
+<span class="sd">    called &quot;image_copies_with_bounding_boxes&quot; </span>
+<span class="sd">:type output_dir: str</span>
+<span class="sd">:param ripe: The class ID numberto assign to ripe tomatoes. Default is </span>
+<span class="sd">    irrelevant, must be changed to fit a given structure in main .yaml </span>
+<span class="sd">    file </span>
+<span class="sd">:type ripe: int, optional</span>
+<span class="sd">:param unripe: The class ID to assign to unripe tomatoes. </span>
+<span class="sd">    Default is irrelevant, must be changed to fit a given structure </span>
+<span class="sd">    in main .yaml file </span>
+<span class="sd">:type unripe: int, optional</span>
+<span class="sd">:param ratio_center_box: Ratio that defines the size of the </span>
+<span class="sd">    sampling region for checking ripeness, </span>
+<span class="sd">    relative to the bounding box size. </span>
+<span class="sd">    Default is 4.</span>
+<span class="sd">:type ratio_center_box: int, optional</span>
+<span class="sd">:return: None</span>
+<span class="sd">:rtype: NoneType</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    
+    <span class="c1"># if an output directory is not given, default behavior, creates</span>
+    <span class="c1"># a directory in original dataset directory called</span>
+    <span class="c1"># &quot;image_copies_with_bounding_boxes&quot;</span>
+    <span class="k">if</span> <span class="n">output_dir</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span>
+                                  <span class="s2">&quot;image_copies_with_bounding_boxes&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_dir</span><span class="p">):</span> <span class="n">sh</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="mo">0o777</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">udf</span><span class="o">.</span><span class="n">find_images_labels_folders</span><span class="p">(</span><span class="n">input_dir</span><span class="p">):</span>
+        <span class="n">images_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;images&quot;</span><span class="p">)</span>
+        <span class="n">labels_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">images_folder</span><span class="p">):</span>
+            <span class="c1"># making sure, reading only files</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+                <span class="c1"># Read image</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                <span class="c1"># Read the corresponding label file</span>
+                <span class="n">label_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">labels_folder</span><span class="p">,</span> 
+                                               <span class="n">image</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> 
+                                               <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+                <span class="c1"># building a list of lists, deepest list is a list of </span>
+                <span class="c1"># the bounding box&#39;s data</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">label_file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">bounding_boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> 
+                                      <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+                <span class="c1"># create a copy of the image with th main bounding box</span>
+                <span class="c1"># and the region of interest around center point </span>
+                <span class="n">image_copy</span> <span class="o">=</span> <span class="n">draw_bounding_boxes</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
+                               <span class="n">bounding_boxes</span><span class="p">,</span>
+                               <span class="n">ratio_center_box</span> <span class="o">=</span> <span class="n">ratio_center_box</span><span class="p">)</span>
+                <span class="n">image_copy_name</span><span class="p">,</span> <span class="n">image_copy_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">image_copy_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> 
+                                               <span class="n">image_copy_name</span> 
+                                               <span class="o">+</span> <span class="s2">&quot;-wbbox&quot;</span> 
+                                               <span class="o">+</span> <span class="n">image_copy_ext</span><span class="p">)</span>
+                <span class="c1"># save image with bounding boxes drawn on it</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">image_copy_path</span><span class="p">,</span> <span class="n">image_copy</span> <span class="p">)</span>
+                
+                <span class="c1"># Process each bounding box and checking for ripeness</span>
+                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bounding_boxes</span><span class="p">)):</span>
+                    <span class="p">(</span><span class="n">class_id</span><span class="p">,</span> 
+                     <span class="n">x_center_norm</span><span class="p">,</span> 
+                     <span class="n">y_center_norm</span><span class="p">,</span> 
+                     <span class="n">box_width_norm</span><span class="p">,</span> 
+                     <span class="n">box_height_norm</span><span class="p">)</span> <span class="o">=</span> <span class="n">bounding_boxes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                    
+                    <span class="c1"># Check if the tomato is ripe based on the bounding</span>
+                    <span class="c1"># box region</span>
+                    <span class="k">if</span> <span class="n">check_tomato_ripeness</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> 
+                                             <span class="nb">float</span><span class="p">(</span><span class="n">x_center_norm</span><span class="p">),</span> 
+                                             <span class="nb">float</span><span class="p">(</span><span class="n">y_center_norm</span><span class="p">),</span> 
+                                             <span class="nb">float</span><span class="p">(</span><span class="n">box_width_norm</span><span class="p">),</span> 
+                                             <span class="nb">float</span><span class="p">(</span><span class="n">box_height_norm</span><span class="p">),</span>
+                                <span class="n">ratio_center_box</span><span class="o">=</span><span class="n">ratio_center_box</span><span class="p">):</span>
+                        <span class="n">bounding_boxes</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ripe</span><span class="p">)</span>  
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">bounding_boxes</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">unripe</span><span class="p">)</span>  
+                    
+                    <span class="c1"># Rebuild the bounding box as a string</span>
+                    <span class="n">bounding_boxes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bounding_boxes</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> 
+                                            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+                <span class="c1"># Write the updated bounding boxes to the label file</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">label_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">bounding_boxes</span><span class="p">)</span>
+                    <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bounding_box</span><span class="p">)</span> <span class="k">for</span> <span class="n">bounding_box</span> <span class="ow">in</span> <span class="n">bounding_boxes</span><span class="p">]</span>       
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">continue</span></div>
+
+<div class="viewcode-block" id="draw_bounding_boxes">
+<a class="viewcode-back" href="../change_class_according_to_HSV.html#change_class_according_to_HSV.draw_bounding_boxes">[docs]</a>
+<span class="k">def</span> <span class="nf">draw_bounding_boxes</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bounding_boxes</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> 
+                        <span class="n">ratio_center_box</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">================</span>
+
+<span class="sd">Draws bounding boxes around objects (tomatoes) in an image based on </span>
+<span class="sd">the provided bounding box coordinates, which are in a normalized </span>
+<span class="sd">format. In addition to the main bounding box, the function draws a </span>
+<span class="sd">smaller square box around the center of each object, sized proportionally </span>
+<span class="sd">to the original bounding box (longest edge). This smaller box is used </span>
+<span class="sd">for further analysis, such as checking for color or ripeness.</span>
+
+<span class="sd">green rectangles for the main bounding boxes and blue rectangles for </span>
+<span class="sd">the smaller boxes around the center points.</span>
+
+<span class="sd">:param image: The input image on which the bounding boxes will be </span>
+<span class="sd">    drawn. This image is typically in BGR color space.</span>
+<span class="sd">:type image: np.ndarray</span>
+<span class="sd">:param bounding_boxes: A list of bounding boxes, where each bounding </span>
+<span class="sd">    box is a list containing the class ID, </span>
+<span class="sd">    normalized x and y center coordinates, </span>
+<span class="sd">    and normalized width and height of the box.</span>
+<span class="sd">:type bounding_boxes: list of lists of strings</span>
+<span class="sd">:param ratio_center_box: The ratio that defines the size of the </span>
+<span class="sd">    smaller box relative to the main bounding </span>
+<span class="sd">    box. The default value is 4, meaning the </span>
+<span class="sd">    smaller box will be 1/4th the size of the </span>
+<span class="sd">    original bounding box.</span>
+<span class="sd">:type ratio_center_box: int, optional</span>
+<span class="sd">:return: A copy of the input image with the bounding boxes drawn on it.</span>
+<span class="sd">:rtype: np.ndarray</span>
+
+<span class="sd">Notes</span>
+<span class="sd">=====</span>
+<span class="sd">- The normalized coordinates for the bounding boxes are converted </span>
+<span class="sd">    to pixel coordinates based on the dimensions of the input image.</span>
+<span class="sd">- The smaller box around the center point is square, and its size </span>
+<span class="sd">    is determined by the larger of the two dimensions (width or height) </span>
+<span class="sd">    of the main bounding box.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">image_copy</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">bounding_boxes</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">class_id</span><span class="p">,</span>
+         <span class="n">x_center_norm</span><span class="p">,</span>
+         <span class="n">y_center_norm</span><span class="p">,</span>
+         <span class="n">box_width_norm</span><span class="p">,</span>
+         <span class="n">box_height_norm</span><span class="p">)</span> <span class="o">=</span> <span class="n">box</span>
+
+        <span class="c1"># Convert normalized coordinates to pixel coordinates</span>
+        <span class="n">x_center_pixel</span><span class="p">,</span> <span class="n">y_center_pixel</span> <span class="o">=</span> <span class="n">get_pixel_coordinates</span><span class="p">(</span>
+                                                <span class="nb">float</span><span class="p">(</span><span class="n">x_center_norm</span><span class="p">),</span> 
+                                                <span class="nb">float</span><span class="p">(</span><span class="n">y_center_norm</span><span class="p">),</span> 
+                                                <span class="n">width</span><span class="p">,</span> 
+                                                <span class="n">height</span><span class="p">)</span>
+        <span class="n">box_width_pixel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">box_width_norm</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">box_height_pixel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">box_height_norm</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span>
+
+        <span class="c1"># Main bounding box coordinates</span>
+        <span class="n">x_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_center_pixel</span> <span class="o">-</span> <span class="n">box_width_pixel</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">y_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_center_pixel</span> <span class="o">-</span> <span class="n">box_height_pixel</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">x_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_center_pixel</span> <span class="o">+</span> <span class="n">box_width_pixel</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">y_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y_center_pixel</span> <span class="o">+</span> <span class="n">box_height_pixel</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+        <span class="c1"># Smaller box around centerpoint</span>
+        <span class="n">small_box_width</span> <span class="o">=</span> <span class="n">box_width_pixel</span> <span class="o">//</span> <span class="n">ratio_center_box</span>
+        <span class="n">small_box_height</span> <span class="o">=</span> <span class="n">box_height_pixel</span> <span class="o">//</span> <span class="n">ratio_center_box</span>
+        <span class="c1"># largest edge of box to build a square box around the middle</span>
+        <span class="n">small_box_edge</span> <span class="o">=</span> <span class="p">(</span><span class="n">small_box_width</span> 
+                                <span class="k">if</span> <span class="n">small_box_width</span> <span class="o">&gt;=</span> <span class="n">small_box_height</span> 
+                                <span class="k">else</span> <span class="n">small_box_height</span><span class="p">)</span>
+        <span class="n">small_x_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_center_pixel</span> <span class="o">-</span> <span class="n">small_box_edge</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">small_y_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_center_pixel</span> <span class="o">-</span> <span class="n">small_box_edge</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">small_x_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_center_pixel</span> <span class="o">+</span> <span class="n">small_box_edge</span> <span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">small_y_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y_center_pixel</span> <span class="o">+</span> <span class="n">small_box_edge</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+        <span class="c1"># Draw the main bounding box</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image_copy</span><span class="p">,</span>            
+                      <span class="p">(</span><span class="n">x_start</span><span class="p">,</span> <span class="n">y_start</span><span class="p">),</span> 
+                      <span class="p">(</span><span class="n">x_end</span><span class="p">,</span> <span class="n">y_end</span><span class="p">),</span> 
+                      <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="c1"># Green color for main box</span>
+                      <span class="mi">2</span><span class="p">)</span>  
+        <span class="c1"># Draw the smaller box</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image_copy</span><span class="p">,</span> 
+                      <span class="p">(</span><span class="n">small_x_start</span><span class="p">,</span> <span class="n">small_y_start</span><span class="p">),</span> 
+                      <span class="p">(</span><span class="n">small_x_end</span><span class="p">,</span> <span class="n">small_y_end</span><span class="p">),</span> 
+                      <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="c1"># Blue color for small box</span>
+                      <span class="mi">1</span><span class="p">)</span>  
+    <span class="k">return</span> <span class="n">image_copy</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">input_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;path_to_your_dataset&quot;</span>
+   <span class="c1"># output_dir = r&quot;&quot; #optional</span>
+    <span class="n">change_class_based_on_color_all</span><span class="p">(</span><span class="n">input_dir</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

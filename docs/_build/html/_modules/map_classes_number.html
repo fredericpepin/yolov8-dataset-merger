@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>map_classes_number &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">map_classes_number</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for map_classes_number</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: map_classes_number</span>
+<span class="sd">    :platform: Unix, Windows</span>
+<span class="sd">    :synopsis: A module for remapping class numbers in label files.</span>
+<span class="sd">    .. function:: replace_class_number_in_file(</span>
+<span class="sd">                            labels_directory: str, </span>
+<span class="sd">                            original_new_tuple_list: </span>
+<span class="sd">                            list[tuple], </span>
+<span class="sd">                            replace: bool = False, </span>
+<span class="sd">                            output_folder_name: str = &quot;mapped_labels&quot;) </span>
+<span class="sd">                            -&gt; None</span>
+<span class="sd">    .. function:: replace_remapped_class_number(</span>
+<span class="sd">                            remapped_yaml_file_path: str, </span>
+<span class="sd">                            labels_directories: list[str], </span>
+<span class="sd">                            replace: bool = False, </span>
+<span class="sd">                            output_folder_name: str = &quot;mapped_labels&quot;) </span>
+<span class="sd">                            -&gt; None</span>
+<span class="sd">    .. function:: replace_class_number_from_folder(folder_containing_datasets: str, </span>
+<span class="sd">                                               remapped_yaml_file_path: str, </span>
+<span class="sd">                                               replace: bool = True) -&gt; None</span>
+<span class="sd">Module Summary</span>
+<span class="sd">=============</span>
+
+<span class="sd">This module provides functions to remap class integers in label files </span>
+<span class="sd">based on mappings defined in a YAML files. YAML files are expected to </span>
+<span class="sd">have been previously automatically remapped with the module </span>
+<span class="sd">*yaml_file_merger* to provide for a clean remapping of each classes ids.</span>
+<span class="sd">It is useful when merging datasets that may have conflicting or </span>
+<span class="sd">different class numbering/ids.</span>
+
+<span class="sd">Functions</span>
+<span class="sd">=========</span>
+<span class="sd">- replace_class_number_in_file: Remaps class integers in label files </span>
+<span class="sd">  based on a mapping provided in a list of tuples.</span>
+<span class="sd">  </span>
+<span class="sd">- replace_remapped_class_number: Replaces class integers in label </span>
+<span class="sd">  files based on a mapping defined in a remapped YAML file.</span>
+<span class="sd">  </span>
+<span class="sd">- replace_class_number_from_folder: Replaces class integers in all </span>
+<span class="sd">  label files found within a specified folder containing multiple </span>
+<span class="sd">  datasets.</span>
+
+<span class="sd">Usage</span>
+<span class="sd">=====</span>
+<span class="sd">This module is intended to be used for preprocessing label files before </span>
+<span class="sd">merging datasets to ensure consistent class numbering. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span> <span class="k">as</span> <span class="nn">sh</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">re</span> 
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">import</span> <span class="nn">common_functions</span> <span class="k">as</span> <span class="nn">cf</span>
+<span class="kn">import</span> <span class="nn">yaml_file_merger</span> <span class="k">as</span> <span class="nn">y</span>
+
+<div class="viewcode-block" id="replace_class_number_in_file">
+<a class="viewcode-back" href="../map_classes_number.html#map_classes_number.replace_class_number_in_file">[docs]</a>
+<span class="k">def</span> <span class="nf">replace_class_number_in_file</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                 <span class="n">original_new_tuple_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> 
+                                 <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+                                 <span class="n">output_folder_name</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mapped_labels&quot;</span> <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Remaps class integers in label files based on a mapping provided in </span>
+<span class="sd">a list of tuples. This is useful when merging datasets to ensure </span>
+
+<span class="sd">:param labels_directory: Path to the directory containing label files </span>
+<span class="sd">    to be remapped.</span>
+<span class="sd">:type labels_directory: str</span>
+<span class="sd">:param original_new_tuple_list: List of tuples where each tuple </span>
+<span class="sd">    contains an old class integer and </span>
+<span class="sd">    its corresponding new class integer.</span>
+<span class="sd">    (old,new)</span>
+<span class="sd">:type original_new_tuple_list: list[tuple[int]]</span>
+<span class="sd">:param replace: If True, replaces the original labels directory with </span>
+<span class="sd">    the remapped one and deletes the original. Default is </span>
+<span class="sd">    False.</span>
+<span class="sd">:type replace: bool</span>
+<span class="sd">:param output_folder_name: Name of the output folder for the </span>
+<span class="sd">    remapped labels. If not provided, it </span>
+<span class="sd">    will be created in the same parent </span>
+<span class="sd">    directory as labels_directory. Default </span>
+<span class="sd">    is &quot;mapped_labels&quot;.</span>
+<span class="sd">:type output_folder_name: str</span>
+<span class="sd">:return: None</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; replace_class_number_in_file(&quot;path/to/labels&quot;, </span>
+<span class="sd">&gt;&gt;&gt;                               [(0, 1), (1, 2), (2, 3)])</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="c1"># reorganize tuples to list of strings</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">original_new_tuple_list</span><span class="p">]</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">original_new_tuple_list</span><span class="p">]</span>
+    
+    <span class="c1"># list of all files in labels_directory</span>
+    <span class="n">file_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of files in original labels_folder: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">file_names</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make output directory, in same parent directory as labels_directory</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">),</span>
+                              <span class="n">output_folder_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">,</span><span class="n">labels_directory</span><span class="o">+</span><span class="s2">&quot;_original&quot;</span><span class="p">)</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">labels_directory</span>
+        <span class="n">labels_directory</span> <span class="o">=</span> <span class="n">labels_directory</span><span class="o">+</span><span class="s2">&quot;_original&quot;</span>
+    <span class="n">cf</span><span class="o">.</span><span class="n">mkdir_unique</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span><span class="mo">0o777</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">:</span>
+        <span class="c1"># read file content</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">,</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="c1"># values are separated by spaces</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">),</span> 
+                          <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)))</span> 
+                          <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+        <span class="c1"># check and compute class number to be changed</span>
+        <span class="n">new_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="c1"># class integer is always the first value therefore [0]</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">original</span><span class="p">:</span>
+                <span class="c1"># get index where value is found, to refer to same index </span>
+                <span class="c1"># in list of new class integers</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> 
+            <span class="c1"># from list to one string</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> 
+        <span class="c1"># write file to output directory</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span><span class="n">file</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">new_lines</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of files in output folder: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
+        <span class="n">cf</span><span class="o">.</span><span class="n">change_permissions</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">)</span>
+        <span class="n">sh</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;original labels directory deleted&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="replace_remapped_class_number">
+<a class="viewcode-back" href="../map_classes_number.html#map_classes_number.replace_remapped_class_number">[docs]</a>
+<span class="k">def</span> <span class="nf">replace_remapped_class_number</span><span class="p">(</span><span class="n">remapped_yaml_file_path</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
+                                  <span class="n">labels_directories</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
+                                  <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+                                  <span class="n">output_folder_name</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mapped_labels&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Replaces class integers in label files based on a mapping defined in </span>
+<span class="sd">a remapped YAML file (see module yaml_file_merger). For datasets with </span>
+<span class="sd">different class numberings.</span>
+
+<span class="sd">:param remapped_yaml_file_path: Path to the YAML file that defines </span>
+<span class="sd">    the remapped class integers.</span>
+<span class="sd">:type remapped_yaml_file_path: str</span>
+<span class="sd">:param labels_directories: List of paths to directories containing </span>
+<span class="sd">    label files to be updated.</span>
+<span class="sd">:type labels_directories: list[str]</span>
+<span class="sd">:param replace: If True, replaces the original labels with remapped </span>
+<span class="sd">    ones and deletes the originals. Default is False.</span>
+<span class="sd">:type replace: bool</span>
+<span class="sd">:param output_folder_name: Name of the output folder for remapped </span>
+<span class="sd">    labels. If not provided, it will be </span>
+<span class="sd">    created in the same parent directory as </span>
+<span class="sd">    labels_directory. Default is </span>
+<span class="sd">    &quot;mapped_labels&quot;.</span>
+<span class="sd">:type output_folder_name: str</span>
+<span class="sd">:return: None</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="c1"># regular expression to identify yaml file</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;.yaml$&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">labels_directory</span> <span class="ow">in</span> <span class="n">labels_directories</span><span class="p">:</span>
+        <span class="c1"># join directory name and yaml file name for a complete path</span>
+        <span class="n">old_yaml</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">)),</span>
+            <span class="c1"># find first occurence of a file with .yaml extension</span>
+            <span class="nb">next</span><span class="p">((</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span>
+                                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+                                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">))</span>
+                                        <span class="p">)</span> <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="n">original_new_tuple_list</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># get both yaml files&#39; parsed content</span>
+        <span class="n">old_yaml</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">parse_yaml_file</span><span class="p">(</span><span class="n">old_yaml</span><span class="p">)</span>
+        <span class="n">new_yaml</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">parse_yaml_file</span><span class="p">(</span><span class="n">remapped_yaml_file_path</span><span class="p">)</span>
+        
+        <span class="n">new_yaml_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new_yaml</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">new_yaml_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new_yaml</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">old_yaml</span><span class="p">[</span><span class="s2">&quot;names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new_yaml_names</span><span class="p">:</span>
+                <span class="n">original</span> <span class="o">=</span> <span class="n">key</span>
+                <span class="n">new</span> <span class="o">=</span> <span class="n">new_yaml_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">: (</span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">new</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+                <span class="n">original_new_tuple_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">original</span><span class="p">,</span><span class="n">new</span><span class="p">))</span>
+        <span class="n">replace_class_number_in_file</span><span class="p">(</span><span class="n">labels_directory</span><span class="p">,</span>
+                                     <span class="n">original_new_tuple_list</span><span class="p">,</span>
+                                     <span class="n">output_folder_name</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="replace_class_number_from_folder">
+<a class="viewcode-back" href="../map_classes_number.html#map_classes_number.replace_class_number_from_folder">[docs]</a>
+<span class="k">def</span> <span class="nf">replace_class_number_from_folder</span><span class="p">(</span><span class="n">folder_containing_datasets</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
+                                     <span class="n">remapped_yaml_file_path</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> 
+                                     <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Replaces class integers in all label files found within a specified </span>
+<span class="sd">folder containing multiple datasets. The class integers are updated </span>
+<span class="sd">based on the mapping defined in a given remapped YAML file.</span>
+<span class="sd">(see module yaml_file_merger)</span>
+
+<span class="sd">:param folder_containing_datasets: The path to the folder that </span>
+<span class="sd">    contains multiple datasets, each </span>
+<span class="sd">    having their own </span>
+<span class="sd">    label files.</span>
+<span class="sd">:type folder_containing_datasets: str</span>
+<span class="sd">:param remapped_yaml_file_path: Path to the YAML file that defines </span>
+<span class="sd">    the remapped class integers.</span>
+<span class="sd">:type remapped_yaml_file_path: str</span>
+<span class="sd">:param replace: If True, replaces the original labels with remapped </span>
+<span class="sd">    ones and deletes the originals. Default is True.</span>
+<span class="sd">:type replace: bool</span>
+<span class="sd">:return: None</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="n">sub_datasets</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">path</span> 
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">folder_containing_datasets</span><span class="p">)</span> 
+                    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()]</span>
+    <span class="n">sub_folders</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">path</span>  
+                   <span class="k">for</span> <span class="n">sub_dataset</span> <span class="ow">in</span> <span class="n">sub_datasets</span>
+                   <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">sub_dataset</span><span class="p">)</span> 
+                   <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()]</span>
+    <span class="n">labels_directories</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">path</span> 
+                          <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">sub_folders</span> 
+                          <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> 
+                          <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;labels&quot;</span> <span class="p">]</span>
+    <span class="n">replace_remapped_class_number</span><span class="p">(</span><span class="n">remapped_yaml_file_path</span><span class="p">,</span>
+                                  <span class="n">labels_directories</span><span class="p">,</span><span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

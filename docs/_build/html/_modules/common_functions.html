@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>common_functions &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">common_functions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for common_functions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: common_functions</span>
+<span class="sd">   :platform: Unix, Windows</span>
+<span class="sd">   :synopsis: Utility functions for directory and list manipulation.</span>
+<span class="sd">   .. function:: flatten_list(list_of_lists: list) -&gt; list</span>
+<span class="sd">   .. function:: mkdir_unique(new_dir_path: str) -&gt; str</span>
+<span class="sd">   .. function:: change_permissions(directory:str, mode: int = 0o777)</span>
+<span class="sd">   .. function:: find_images_labels_folders_nested(dir: str) -&gt; list</span>
+<span class="sd">   .. function:: count_number_of_image_and_labels(dataset_path: str) </span>
+<span class="sd">                -&gt; tuple[int, int]</span>
+<span class="sd">Module Summary</span>
+<span class="sd">==============</span>
+<span class="sd">This module contains utility functions for working with file directories </span>
+<span class="sd">and manipulating nested lists. It includes functions to flatten a list </span>
+<span class="sd">of lists, create unique directories, change directory permissions, </span>
+<span class="sd">and recursively find directories containing specific subfolders </span>
+<span class="sd">(&quot;images&quot; and &quot;labels&quot;).</span>
+
+<span class="sd">Functions</span>
+<span class="sd">=========</span>
+<span class="sd">- flatten_list: Flattens a nested list into a single one-dimensional </span>
+<span class="sd">    list.</span>
+<span class="sd">- mkdir_unique: Creates a unique directory at a specified path.</span>
+<span class="sd">- change_permissions: Changes the permissions of a directory and its </span>
+<span class="sd">    contents recursively.</span>
+<span class="sd">- find_images_labels_folders: Searches for directories containing </span>
+<span class="sd">    &quot;images&quot; or &quot;labels&quot; subfolders.</span>
+<span class="sd">- count_number_ofimage_and_labels: counts the number of images and </span>
+<span class="sd">    labels contained in a dataset (train, test and val all comprised</span>
+<span class="sd">    together)</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; from my_module import flatten_list, mkdir_unique, </span>
+<span class="sd">    find_images_labels_folders</span>
+<span class="sd">&gt;&gt;&gt; flattened = flatten_list([[1, 2, [3]], [4, 5]])</span>
+<span class="sd">&gt;&gt;&gt; print(flattened)</span>
+<span class="sd">[1, 2, 3, 4, 5]</span>
+<span class="sd">&gt;&gt;&gt; dir_path = mkdir_unique(&quot;my_directory&quot;)</span>
+<span class="sd">&gt;&gt;&gt; folders = find_images_labels_folders(&quot;/path/to/data&quot;)</span>
+<span class="sd">&gt;&gt;&gt; print(folders)</span>
+<span class="sd">[&#39;/path/to/data/folder1&#39;, &#39;/path/to/data/folder2&#39;]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+
+
+<div class="viewcode-block" id="count_number_of_image_and_labels">
+<a class="viewcode-back" href="../common_functions.html#common_functions.count_number_of_image_and_labels">[docs]</a>
+<span class="k">def</span> <span class="nf">count_number_of_image_and_labels</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Counts the total number of images and label files in a dataset </span>
+<span class="sd">structured with subdirectories containing &quot;images&quot; and &quot;labels&quot; </span>
+<span class="sd">folders. Usefull for debugging and making sure merges have occurred</span>
+<span class="sd">without errors</span>
+
+<span class="sd">:param dataset_path: The path to the dataset directory which contains </span>
+<span class="sd">    subdirectories with &quot;images&quot; and &quot;labels&quot; </span>
+<span class="sd">    folders.</span>
+<span class="sd">:type dataset_path: str</span>
+<span class="sd">:return: A tuple containing two integers: the total number of images </span>
+<span class="sd">    and the total number of label files found in the dataset.</span>
+<span class="sd">    (number_images,number_labels)</span>
+<span class="sd">:rtype: tuple[int, int]</span>
+
+<span class="sd">Example</span>
+<span class="sd">========</span>
+<span class="sd">&gt;&gt;&gt; total_images, total_labels = count_number_of_image_and_labels(&quot;path/to/dataset&quot;)</span>
+<span class="sd">&gt;&gt;&gt; print(total_images, total_labels)</span>
+<span class="sd">(150, 150)</span>
+
+<span class="sd">Notes</span>
+<span class="sd">=====</span>
+<span class="sd">- The function assumes that each subdirectory contains a folder named </span>
+<span class="sd">    &quot;images&quot; and a folder named &quot;labels&quot;. If these folders are not </span>
+<span class="sd">    present, the function will skip that subdirectory.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="n">sub_dirs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">)</span>
+    <span class="n">number_image</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">number_labels</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">subfolder</span> <span class="ow">in</span> <span class="n">sub_dirs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subfolder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="n">images_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subfolder</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;images&quot;</span><span class="p">)</span>
+        <span class="n">number_image</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">images_folder</span><span class="p">))</span>
+        <span class="n">labels_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subfolder</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">)</span>
+        <span class="n">number_labels</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">labels_folder</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">number_image</span><span class="p">,</span> <span class="n">number_labels</span></div>
+
+
+<div class="viewcode-block" id="flatten_list">
+<a class="viewcode-back" href="../common_functions.html#common_functions.flatten_list">[docs]</a>
+<span class="k">def</span> <span class="nf">flatten_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">list_of_lists</span><span class="p">:</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Flattens a list containing nested lists into a single one-dimensional </span>
+<span class="sd">list. If the input is not a list, it returns a list containing the </span>
+<span class="sd">input element.</span>
+
+<span class="sd">:param list_of_lists: A list that may contain nested lists. The </span>
+<span class="sd">    function will recursively flatten any nested </span>
+<span class="sd">    structures within it.</span>
+<span class="sd">:type list_of_lists: list</span>
+<span class="sd">:return: A one-dimensional list containing all the elements from </span>
+<span class="sd">    the input list, including those from any nested lists.</span>
+<span class="sd">:rtype: list</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; flatten_list([[1, 2, [3]], [4, 5]])</span>
+<span class="sd">[1, 2, 3, 4, 5]</span>
+
+<span class="sd">&gt;&gt;&gt; flatten_list(10)</span>
+<span class="sd">[10]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">list_of_lists</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">acc</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">flatten_list</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> 
+                      <span class="n">list_of_lists</span><span class="p">,</span> <span class="p">[])</span></div>
+
+        
+<div class="viewcode-block" id="mkdir_unique">
+<a class="viewcode-back" href="../common_functions.html#common_functions.mkdir_unique">[docs]</a>
+<span class="k">def</span> <span class="nf">mkdir_unique</span><span class="p">(</span><span class="n">new_dir_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Creates a new directory at the specified path. If the directory </span>
+<span class="sd">already exists, a unique directory name is generated by appending </span>
+<span class="sd">an index to the base name, and the new directory is created.</span>
+
+<span class="sd">:param new_dir_path: The path where the new directory should be </span>
+<span class="sd">    created. If a directory with this name already </span>
+<span class="sd">    exists, a unique name will be generated.</span>
+<span class="sd">:type new_dir_path: str</span>
+<span class="sd">:return: The path to the newly created directory, whether it is </span>
+<span class="sd">    the original or the unique one.</span>
+<span class="sd">:rtype: str</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; mkdir_unique(&quot;my_directory&quot;)</span>
+<span class="sd">&#39;my_directory&#39;  # If it didn&#39;t exist initially</span>
+
+<span class="sd">&gt;&gt;&gt; mkdir_unique(&quot;my_directory&quot;)</span>
+<span class="sd">&#39;my_directory_1&#39;  # If &#39;my_directory&#39; already existed</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="c1"># Check if the directory already exists</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_dir_path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">new_dir_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_dir_path</span>
+    
+    <span class="c1"># Directory already exists, generate a unique name</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">unique_dir_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_dir_path</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">unique_dir_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">unique_dir_path</span><span class="p">,</span><span class="mo">0o777</span><span class="p">)</span>
+            <span class="n">change_permissions</span><span class="p">(</span><span class="n">unique_dir_path</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">unique_dir_path</span>
+        
+        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="change_permissions">
+<a class="viewcode-back" href="../common_functions.html#common_functions.change_permissions">[docs]</a>
+<span class="k">def</span> <span class="nf">change_permissions</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="mo">0o777</span><span class="p">):</span>
+    <span class="c1"># Change permissions recursively</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="k">for</span> <span class="nb">dir</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">dir</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span></div>
+
+            
+<div class="viewcode-block" id="find_images_labels_folders">
+<a class="viewcode-back" href="../common_functions.html#common_functions.find_images_labels_folders">[docs]</a>
+<span class="k">def</span> <span class="nf">find_images_labels_folders</span><span class="p">(</span><span class="n">input_dir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">=======</span>
+<span class="sd">Recursively searches through a directory to find subfolders named </span>
+<span class="sd">&quot;images&quot; or &quot;labels&quot;. When such folders are found, the function </span>
+<span class="sd">adds the parent directory containing these subfolders to a list.</span>
+
+<span class="sd">This function is designed to locate directories that contain images </span>
+<span class="sd">and labels for further processing in a dataset.</span>
+
+
+<span class="sd">:param dir: The path of the directory to search for subfolders. </span>
+<span class="sd">    The search is performed recursively within all nested </span>
+<span class="sd">    subdirectories.</span>
+<span class="sd">:type dir: str</span>
+<span class="sd">:return: A list of directories that contain either an &quot;images&quot; or </span>
+<span class="sd">    &quot;labels&quot; subfolder.</span>
+<span class="sd">:rtype: list</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+<span class="sd">&gt;&gt;&gt; folders = find_images_labels_folders_nested(&quot;/path/to/data&quot;)</span>
+<span class="sd">&gt;&gt;&gt; print(folders)</span>
+<span class="sd">[&#39;/path/to/data/folder1&#39;, &#39;/path/to/data/folder2&#39;]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="n">folders_containing_images_labels_sub_folders</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">find_images_labels_folders_nested</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
+        <span class="n">folder_content</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">folder_content</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;images&quot;</span> <span class="ow">or</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span>
+                <span class="n">folders_containing_images_labels_sub_folders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">find_images_labels_folders_nested</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> 
+    <span class="n">find_images_labels_folders_nested</span><span class="p">(</span><span class="n">input_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">folders_containing_images_labels_sub_folders</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

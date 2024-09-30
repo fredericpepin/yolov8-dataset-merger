@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>examples &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">examples</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for examples</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: examples (miscellaneous)</span>
+<span class="sd">    .. function:: main(path_to_all_datasets_folder: str) -&gt; None</span>
+<span class="sd">    </span>
+<span class="sd">Module Summary</span>
+<span class="sd">==============</span>
+
+<span class="sd">Module to show case some miscellaneous pieces of code. Functions are</span>
+<span class="sd">nevertheless usable</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">resolve_filenames_conflicts</span> <span class="kn">import</span> <span class="n">merge_datasets</span>
+<span class="kn">import</span> <span class="nn">ultralytics.data.converter</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">from</span> <span class="nn">ultralytics</span> <span class="kn">import</span> <span class="n">YOLO</span>
+
+
+<div class="viewcode-block" id="coco_to_yolo">
+<a class="viewcode-back" href="../examples.html#examples.coco_to_yolo">[docs]</a>
+<span class="k">def</span> <span class="nf">coco_to_yolo</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Example transform COCO Dataset in YOLOv8</span>
+<span class="sd">======================================</span>
+
+<span class="sd">.. code-block::</span>
+
+<span class="sd">    import ultralytics.data.converter as u</span>
+<span class="sd">    u.convert_coco(r&quot;TomatoLaboro\annotations&quot;,r&quot;.\output_labels&quot;,True)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">convert_coco</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;TomatoLaboro\annotations&quot;</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;.\test__&quot;</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../examples.html#examples.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">path_to_all_datasets_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Dataset Merger Code Example</span>
+<span class="sd">===========================</span>
+
+<span class="sd">.. code-block::</span>
+
+<span class="sd">    import os</span>
+<span class="sd">    import time</span>
+<span class="sd">    from resolve_filenames_conflicts import merge_datasets</span>
+<span class="sd">    tic = time.time()</span>
+<span class="sd">    path_to_all_datasets_folder = r&quot;path/to/folder/containing/all/datasets&quot;</span>
+<span class="sd">    # output in the script&#39;s directory</span>
+<span class="sd">    output_path = os.path.dirname(__file__)</span>
+<span class="sd">    merge_datasets(path_to_all_datasets_folder,output_path)</span>
+<span class="sd">    toc = time.time()</span>
+<span class="sd">    print(f&quot;execution time: {toc-tic:0.4f} seconds&quot;)</span>
+
+<span class="sd">:param path_to_all_datasets_folder: _description_</span>
+<span class="sd">:type path_to_all_datasets_folder: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">merge_datasets</span><span class="p">(</span><span class="n">path_to_all_datasets_folder</span><span class="p">,</span><span class="n">output_path</span><span class="p">)</span>
+    <span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;execution time: </span><span class="si">{</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="si">:</span><span class="s2">0.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="train_model">
+<a class="viewcode-back" href="../examples.html#examples.train_model">[docs]</a>
+<span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model</span> <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Train Model Example Code</span>
+<span class="sd">========================</span>
+
+<span class="sd">.. code-block::</span>
+
+<span class="sd">    from ultralytics import YOLO</span>
+<span class="sd">    # based on a pre-trained yolo omdel</span>
+<span class="sd">    model = YOLO(&quot;yolov8n-seg.pt&quot;)</span>
+<span class="sd">    results = model.train(data = r&quot;path/to/dataset&quot;,epochs=100)</span>
+
+<span class="sd">:param dataset_path: _description_</span>
+<span class="sd">:type dataset_path: str</span>
+<span class="sd">:param model: pre trained model, YOLO(&quot;yolov8n-seg.pt&quot;)</span>
+<span class="sd">:type model: _type_, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># based on a pre-trained yolo omdel</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">YOLO</span><span class="p">(</span><span class="s2">&quot;yolov8n-seg.pt&quot;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset_path</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

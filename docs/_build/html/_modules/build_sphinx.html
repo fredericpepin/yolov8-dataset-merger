@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>build_sphinx &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4d045338"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">dataset_merger</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">build_sphinx</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for build_sphinx</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: build_sphinx</span>
+
+<span class="sd">Module Summary</span>
+<span class="sd">==============</span>
+
+<span class="sd">This module automates the generation of Sphinx documentation for a </span>
+<span class="sd">Python package using the &#39;sphinx-apidoc&#39; command and provides </span>
+<span class="sd">utilities to clean up old documentation files before building the new </span>
+<span class="sd">documentation. The module also includes functionality to handle the </span>
+<span class="sd">execution of a Makefile (or make.bat on Windows) to build the </span>
+<span class="sd">documentation in different formats (e.g., HTML, LaTeX).</span>
+
+<span class="sd">Functions</span>
+<span class="sd">=========</span>
+
+<span class="sd">- &#39;clean_rst_files(directory: str)&#39;: Deletes all &#39;.rst&#39; files in the </span>
+<span class="sd">  specified directory, except for &#39;index.rst&#39;.</span>
+<span class="sd">  </span>
+<span class="sd">- &#39;clean_build_directory(output_dir: str)&#39;: Deletes all contents in </span>
+<span class="sd">  the &#39;_build&#39; directory, except the directory itself.</span>
+
+<span class="sd">- &#39;build_documentation(exclude_patterns: list[str], output_dir: str, </span>
+<span class="sd">  source_dir: str)&#39;: Generates Sphinx documentation using </span>
+<span class="sd">  &#39;sphinx-apidoc&#39; and builds the output in the specified format.</span>
+
+<span class="sd">- &#39;Makefile(output_dir: str, format: str = &#39;html&#39;)&#39;: Runs the </span>
+<span class="sd">  appropriate Makefile (or make.bat) to generate the documentation in </span>
+<span class="sd">  the specified format.</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+
+<span class="sd">To run the script, ensure that `sphinx-apidoc` is installed and </span>
+<span class="sd">available in your system&#39;s PATH, then call the `build_documentation()` </span>
+<span class="sd">function with your desired parameters:</span>
+
+<span class="sd">.. code-block::</span>
+
+<span class="sd">    exclude_patterns = [&quot;*test*&quot;, &quot;.vscode&quot;, </span>
+<span class="sd">                        &quot;datasets_to_merge&quot;, &quot;merged_dataset*&quot;, </span>
+<span class="sd">                        &quot;runs&quot;, &quot;instances_train2017.json&quot;, </span>
+<span class="sd">                        &quot;yolov8n-seg.pt&quot;, &quot;yolov8n.pt&quot;]</span>
+<span class="sd">    output_dir = r&quot;C:\path\to\your\docs&quot;</span>
+<span class="sd">    source_dir = r&quot;C:\path\to\your\package-or-dir-containg-modules&quot;</span>
+<span class="sd">    build_documentation(exclude_patterns, output_dir, source_dir)</span>
+
+<span class="sd">Requirements</span>
+<span class="sd">============</span>
+<span class="sd">- usefull `primer tutorial &lt;https://towardsdatascience.com/documenting-python-code-with-sphinx-554e1d6c4f6d&gt;`_ </span>
+<span class="sd">- &#39;sphinx-apidoc&#39; must be installed.</span>
+<span class="sd">- &#39;sphinx&#39; must be configured in the output directory for building the </span>
+<span class="sd">  documentation. This can be done with command &#39;sphinx-quickstart&#39;.</span>
+<span class="sd">  Note that after configuration with the sphinx wizard, you&#39;ll</span>
+<span class="sd">  need to modify the conf.py file in output directory. For consistent </span>
+<span class="sd">  style and behavior, configure as follow:</span>
+<span class="sd">  </span>
+<span class="sd">.. code-block::</span>
+
+<span class="sd">    # Configuration file for the Sphinx documentation builder.</span>
+<span class="sd">    #</span>
+<span class="sd">    # For the full list of built-in configuration values, see the documentation:</span>
+<span class="sd">    # https://www.sphinx-doc.org/en/master/usage/configuration.html</span>
+<span class="sd">    # -- Path setup --------------------------------------------------------------</span>
+<span class="sd">    import os</span>
+<span class="sd">    import sys</span>
+<span class="sd">    sys.path.insert(0, os.path.abspath(&#39;..&#39;))</span>
+<span class="sd">    # -- Project information -----------------------------------------------------</span>
+<span class="sd">    # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information</span>
+
+<span class="sd">    project = &#39;YOLOv8 Dataset Merger&#39;</span>
+<span class="sd">    copyright = &#39;2024, Frederic Pepin&#39;</span>
+<span class="sd">    author = &#39;Frederic Pepin&#39;</span>
+<span class="sd">    release = &#39;2024-09-30&#39;</span>
+
+<span class="sd">    # -- General configuration ---------------------------------------------------</span>
+<span class="sd">    # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration</span>
+
+<span class="sd">    extensions = [</span>
+<span class="sd">        &#39;sphinx.ext.autodoc&#39;,</span>
+<span class="sd">        &#39;sphinx.ext.viewcode&#39;,</span>
+<span class="sd">        &#39;sphinx.ext.napoleon&#39;</span>
+<span class="sd">    ]</span>
+
+<span class="sd">    templates_path = [&#39;_templates&#39;]</span>
+<span class="sd">    exclude_patterns = [&#39;_build&#39;, &#39;Thumbs.db&#39;, &#39;.DS_Store&#39;]</span>
+
+<span class="sd">    # -- Options for HTML output -------------------------------------------------</span>
+<span class="sd">    # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output</span>
+
+<span class="sd">    html_theme = &#39;sphinx_rtd_theme&#39;</span>
+<span class="sd">    html_static_path = [&#39;_static&#39;]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">shutil</span> <span class="k">as</span> <span class="nn">sh</span>
+
+<div class="viewcode-block" id="clean_rst_files">
+<a class="viewcode-back" href="../build_sphinx.html#build_sphinx.clean_rst_files">[docs]</a>
+<span class="k">def</span> <span class="nf">clean_rst_files</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function Summary</span>
+<span class="sd">    ================</span>
+<span class="sd">    </span>
+<span class="sd">    Deletes all .rst files in the specified directory except &#39;index.rst&#39;.</span>
+<span class="sd">    </span>
+<span class="sd">    :param directory: The directory to search for .rst files.</span>
+<span class="sd">    :type directory: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.rst&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">file</span> <span class="o">!=</span> <span class="s2">&quot;index.rst&quot;</span><span class="p">:</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="clean_build_directory">
+<a class="viewcode-back" href="../build_sphinx.html#build_sphinx.clean_build_directory">[docs]</a>
+<span class="k">def</span> <span class="nf">clean_build_directory</span><span class="p">(</span><span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function Summary</span>
+<span class="sd">    ================</span>
+<span class="sd">    Deletes all contents of the &#39;_build&#39; directory except the director</span>
+<span class="sd">    itself.</span>
+<span class="sd">    </span>
+<span class="sd">    :param output_directory: The path to the output directory (docs) </span>
+<span class="sd">        containing the &#39;_build&#39; directory.</span>
+<span class="sd">    :type output_directory: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">build_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;_build&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">build_directory</span><span class="p">):</span>
+        <span class="n">item_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">build_directory</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">item_path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">islink</span><span class="p">(</span><span class="n">item_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted file: </span><span class="si">{</span><span class="n">item_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">item_path</span><span class="p">):</span>
+            <span class="n">sh</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">item_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted directory and contents: </span><span class="si">{</span><span class="n">item_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="build_documentation">
+<a class="viewcode-back" href="../build_sphinx.html#build_sphinx.build_documentation">[docs]</a>
+<span class="k">def</span> <span class="nf">build_documentation</span><span class="p">(</span><span class="n">exclude_patterns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                      <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;docs&quot;</span><span class="p">,</span> 
+                      <span class="n">source_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function Summary</span>
+<span class="sd">================</span>
+
+<span class="sd">Generates Sphinx documentation using the sphinx-apidoc command.</span>
+
+<span class="sd">This function searches the current working directory for modules </span>
+<span class="sd">to be documented (by default) or given source folder. The output is </span>
+<span class="sd">saved to the specified directory (defaults to &#39;docs&#39; in the current </span>
+<span class="sd">working directory). Specific file patterns can be excluded from the </span>
+<span class="sd">documentation generation.</span>
+
+<span class="sd">:param exclude_patterns: A list of patterns to exclude from the </span>
+<span class="sd">    documentation generation (e.g., test files, configuration folders, </span>
+<span class="sd">    or non-module files).</span>
+<span class="sd">:type exclude_patterns: list[str]</span>
+<span class="sd">:param output_dir: The directory where the generated documentation </span>
+<span class="sd">    will be saved (defaults to &#39;docs&#39;).</span>
+<span class="sd">:type output_dir: str</span>
+<span class="sd">:param source_dir: The directory of the source code (defaults to the </span>
+<span class="sd">    current file&#39;s directory).</span>
+<span class="sd">:type source_dir: str</span>
+<span class="sd">:return: None</span>
+<span class="sd">:rtype: None</span>
+
+<span class="sd">Notes</span>
+<span class="sd">=====</span>
+<span class="sd">- The function changes the working directory to the script&#39;s location </span>
+<span class="sd">    before running the `sphinx-apidoc` command.</span>
+<span class="sd">- The command output is captured for debugging purposes.</span>
+<span class="sd">- in the index.rst file, *modules* should be appended:</span>
+
+<span class="sd">::</span>
+<span class="sd">    </span>
+<span class="sd">    .. toctree::</span>
+<span class="sd">   :maxdepth: 2</span>
+<span class="sd">   :caption: Contents:</span>
+<span class="sd">   modules</span>
+<span class="sd">   [...]</span>
+<span class="sd">   </span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sphinx-apidoc&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="p">]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">source_dir</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="n">exclude_patterns</span>
+    
+    <span class="c1"># clean old content</span>
+    <span class="n">clean_rst_files</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+    <span class="n">clean_build_directory</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+
+    <span class="c1"># parse docstrings to reStructuredText files</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>    
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Build html files </span>
+    <span class="n">Makefile</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Makefile">
+<a class="viewcode-back" href="../build_sphinx.html#build_sphinx.Makefile">[docs]</a>
+<span class="k">def</span> <span class="nf">Makefile</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;html&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function Summary</span>
+<span class="sd">    ================</span>
+<span class="sd">    </span>
+<span class="sd">    Execute Makefile independently of OS</span>
+
+<span class="sd">    :param output_dir: where documentation will be contained</span>
+<span class="sd">    :type path_to_make_script: str</span>
+<span class="sd">    :param format: format to export to, html is default. </span>
+<span class="sd">        other formats are latexpdf, see sphinx documentation for </span>
+<span class="sd">        necessary dependencies</span>
+<span class="sd">    :type format: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+        <span class="n">path_to_make_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;make.bat&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path_to_make_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;make&quot;</span><span class="p">)</span>
+        
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">path_to_make_file</span><span class="p">,</span> <span class="nb">format</span><span class="p">],</span> 
+                    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    
+    <span class="n">exclude_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;*test*&quot;</span><span class="p">,</span> <span class="s2">&quot;.vscode&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;datasets_to_merge&quot;</span><span class="p">,</span> <span class="s2">&quot;merged_dataset*&quot;</span><span class="p">,</span> <span class="s2">&quot;runs&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;instances_train2017.json&quot;</span><span class="p">,</span> <span class="s2">&quot;yolov8n-seg.pt&quot;</span> <span class="s2">&quot;yolov8n.pt&quot;</span><span class="p">]</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\dataset_merger\docs&quot;</span>
+    <span class="n">source_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\dataset_merger&quot;</span>
+    <span class="n">build_documentation</span><span class="p">(</span><span class="n">exclude_patterns</span><span class="p">,</span><span class="n">output_dir</span><span class="p">,</span><span class="n">source_dir</span><span class="p">)</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+yolov8n-seg.pt
+yolov8n.pt
+*test*
+instances_train2017.json
+runs/
+merged_dataset*/
+datasets_to_merge/
+__pycache__
+.vscode
+

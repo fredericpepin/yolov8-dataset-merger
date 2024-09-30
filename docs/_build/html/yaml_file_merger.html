@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yaml_file_merger module &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=4d045338"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="test module" href="test.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">dataset_merger</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="background_images.html">background_images module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html">build_sphinx module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html">change_class_according_to_HSV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common_functions.html">common_functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html">convert_segmentation_mask_to_bounding_box module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">examples module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html">map_classes_number module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html">resolve_filenames_conflicts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supervisely_json_to_yolov8.html">supervisely_json_to_yolov8 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test.html">test module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">yaml_file_merger module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-summary">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yaml_file_merger.merge_yaml_files"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yaml_file_merger.merge_yaml_files_from_folder"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files_from_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yaml_file_merger.parse_yaml_file"><code class="docutils literal notranslate"><span class="pre">parse_yaml_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">dataset_merger</a></li>
+      <li class="breadcrumb-item active">yaml_file_merger module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/yaml_file_merger.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-yaml_file_merger">
+<span id="yaml-file-merger-module"></span><h1>yaml_file_merger module<a class="headerlink" href="#module-yaml_file_merger" title="Link to this heading"></a></h1>
+<section id="module-summary">
+<h2>Module Summary<a class="headerlink" href="#module-summary" title="Link to this heading"></a></h2>
+<p>This module provides functions to parse and merge YAML files that
+contain class mappings for different datasets. It ensures that improper
+formatting of yaml files is handled, remapping class names to unique
+integers and maintaining a count of the total classes.
+This functionality is especially useful when  combining datasets that
+may have conflicting or different class
+numbering.</p>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>parse_yaml_file: Parses a YAML file, converting the “names” key
+into a dictionary format and ensuring the file’s content is valid
+for further processing.</p></li>
+<li><p>merge_yaml_files: Merges multiple YAML files into a single YAML
+file, remapping class names to unique class integers and updating
+the total class count.</p></li>
+<li><p>merge_yaml_files_from_folder: Merges all YAML files found within
+subdirectories of a specified folder, compiling their contents and
+remapping class names to unique integers.</p></li>
+</ul>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yaml_file_merger.merge_yaml_files">
+<span class="sig-prename descclassname"><span class="pre">yaml_file_merger.</span></span><span class="sig-name descname"><span class="pre">merge_yaml_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_files_paths_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaml_file_merger.html#merge_yaml_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yaml_file_merger.merge_yaml_files" title="Link to this definition"></a></dt>
+<dd><section id="function-summary">
+<h2>Function Summary<a class="headerlink" href="#function-summary" title="Link to this heading"></a></h2>
+<p>Merges multiple YAML files that contain class mappings into a single
+YAML file. This function ensures that class names are remapped to
+unique class integers and updates the total class count in the
+output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param yaml_files_paths_list<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of paths to the YAML files
+that need to be merged.</p>
+</dd>
+<dt class="field-even">type yaml_files_paths_list<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+<dt class="field-odd">param output_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The optional path where the merged YAML file
+will be saved. If not provided, it defaults
+to the parent directory of the first dataset.</p>
+</dd>
+<dt class="field-even">type output_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the merged YAML file that was created.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">merged_path</span> <span class="o">=</span> <span class="n">merge_yaml_files</span><span class="p">([</span><span class="s2">&quot;path/to/dataset1/data.yaml&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                                  <span class="s2">&quot;path/to/dataset2/data.yaml&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">merged_path</span><span class="p">)</span>
+<span class="go">&quot;path/to/parent/merged_data.yaml&quot;</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The function assumes that each YAML file contains a “names” key</dt><dd><p>mapping class integers to class names.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If a class name already exists in the output dictionary, it</dt><dd><p>will not be added again.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The total number of classes (‘nc’) is updated in the output</dt><dd><p>YAML file based on the unique class names.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yaml_file_merger.merge_yaml_files_from_folder">
+<span class="sig-prename descclassname"><span class="pre">yaml_file_merger.</span></span><span class="sig-name descname"><span class="pre">merge_yaml_files_from_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_containing_datasets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaml_file_merger.html#merge_yaml_files_from_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yaml_file_merger.merge_yaml_files_from_folder" title="Link to this definition"></a></dt>
+<dd><section id="id1">
+<h2>Function Summary<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Merges all YAML files found within subdirectories of a specified
+folder into a single YAML file. The function searches for the first
+YAML file in each dataset folder and compiles their contents while
+remapping class names to unique integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the folder that
+contains multiple dataset subdirectories, each expected to
+have a YAML file with class mappings.</p>
+</dd>
+<dt class="field-even">type folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param output_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The optional path where the merged YAML file
+will be saved. If not provided, it defaults to the parent
+directory, namely folder containing all subdatasets.</p>
+</dd>
+<dt class="field-even">type output_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the merged YAML file that was created.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">merged_yaml_path</span> <span class="o">=</span> <span class="n">merge_yaml_files_from_folder</span><span class="p">(</span><span class="s2">&quot;path/to/dataset_folder&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">merged_yaml_path</span><span class="p">)</span>
+<span class="go">&quot;path/to/parent/merged_data.yaml&quot;</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The function expects each subdirectory to contain at least one</dt><dd><p>YAML file. If no YAML file is found, the corresponding folder
+will be skipped.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The merged YAML file will contain unique class mappings from</dt><dd><p>all the input YAML files.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yaml_file_merger.parse_yaml_file">
+<span class="sig-prename descclassname"><span class="pre">yaml_file_merger.</span></span><span class="sig-name descname"><span class="pre">parse_yaml_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yaml_file_merger.html#parse_yaml_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yaml_file_merger.parse_yaml_file" title="Link to this definition"></a></dt>
+<dd><section id="id2">
+<h2>Function Summary<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>Parses a YAML file by removing any tab characters and converting
+the names specified in the file into a dictionary format. This
+function ensures that the resulting content is valid for further
+processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param yaml_file<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The file path to the YAML file that needs to be
+parsed.</p>
+</dd>
+<dt class="field-even">type yaml_file<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the parsed content of the YAML file.
+The “names” key, if initially a list, is transformed into a
+dictionary where the index is the key and the corresponding
+name is the value.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parsed_content</span> <span class="o">=</span> <span class="n">parse_yaml_file</span><span class="p">(</span><span class="s2">&quot;path/to/yaml_file.yaml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">parsed_content</span><span class="p">)</span>
+<span class="go">{&#39;names&#39;: {0: &#39;class_1&#39;, 1: &#39;class_2&#39;, ...}}</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>This function replaces tab characters with double spaces since</dt><dd><p>tabs are not allowed in YAML syntax.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="test.html" class="btn btn-neutral float-left" title="test module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
