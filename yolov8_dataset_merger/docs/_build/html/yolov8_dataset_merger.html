@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yolov8_dataset_merger package &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=4d045338"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="yolov8_dataset_merger" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            YOLOv8 Dataset Merger
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">yolov8_dataset_merger</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">yolov8_dataset_merger package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.background_images">yolov8_dataset_merger.background_images module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.background_images.background_images"><code class="docutils literal notranslate"><span class="pre">background_images()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.build_sphinx">yolov8_dataset_merger.build_sphinx module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-summary">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.build_sphinx.Makefile"><code class="docutils literal notranslate"><span class="pre">Makefile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.build_sphinx.build_documentation"><code class="docutils literal notranslate"><span class="pre">build_documentation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.build_sphinx.clean_build_directory"><code class="docutils literal notranslate"><span class="pre">clean_build_directory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.build_sphinx.clean_rst_files"><code class="docutils literal notranslate"><span class="pre">clean_rst_files()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.change_class_according_to_HSV">yolov8_dataset_merger.change_class_according_to_HSV module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.change_class_according_to_HSV.change_class_based_on_color_all"><code class="docutils literal notranslate"><span class="pre">change_class_based_on_color_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.change_class_according_to_HSV.check_tomato_ripeness"><code class="docutils literal notranslate"><span class="pre">check_tomato_ripeness()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.change_class_according_to_HSV.draw_bounding_boxes"><code class="docutils literal notranslate"><span class="pre">draw_bounding_boxes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.change_class_according_to_HSV.get_pixel_coordinates"><code class="docutils literal notranslate"><span class="pre">get_pixel_coordinates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.change_class_according_to_HSV.is_ripe_tomato"><code class="docutils literal notranslate"><span class="pre">is_ripe_tomato()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.common_functions">yolov8_dataset_merger.common_functions module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.common_functions.change_permissions"><code class="docutils literal notranslate"><span class="pre">change_permissions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.common_functions.count_number_of_image_and_labels"><code class="docutils literal notranslate"><span class="pre">count_number_of_image_and_labels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.common_functions.find_images_labels_folders"><code class="docutils literal notranslate"><span class="pre">find_images_labels_folders()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.common_functions.flatten_list"><code class="docutils literal notranslate"><span class="pre">flatten_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.common_functions.mkdir_unique"><code class="docutils literal notranslate"><span class="pre">mkdir_unique()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box">yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id17">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.convert_mask_to_boundung_box"><code class="docutils literal notranslate"><span class="pre">convert_mask_to_boundung_box()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.process_masks_to_bounding_boxes"><code class="docutils literal notranslate"><span class="pre">process_masks_to_bounding_boxes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.rund"><code class="docutils literal notranslate"><span class="pre">rund()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.examples">yolov8_dataset_merger.examples module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id21">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.examples.coco_to_yolo"><code class="docutils literal notranslate"><span class="pre">coco_to_yolo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.examples.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.examples.train_model"><code class="docutils literal notranslate"><span class="pre">train_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.main">yolov8_dataset_merger.main module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.map_classes_number">yolov8_dataset_merger.map_classes_number module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id22">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id23">Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id24">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.map_classes_number.replace_class_number_from_folder"><code class="docutils literal notranslate"><span class="pre">replace_class_number_from_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.map_classes_number.replace_class_number_in_file"><code class="docutils literal notranslate"><span class="pre">replace_class_number_in_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.map_classes_number.replace_remapped_class_number"><code class="docutils literal notranslate"><span class="pre">replace_remapped_class_number()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.resolve_filenames_conflicts">yolov8_dataset_merger.resolve_filenames_conflicts module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id28">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29">Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.resolve_filenames_conflicts.are_there_conflicts"><code class="docutils literal notranslate"><span class="pre">are_there_conflicts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.resolve_filenames_conflicts.merge_datasets"><code class="docutils literal notranslate"><span class="pre">merge_datasets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.resolve_filenames_conflicts.resolve_filenames_conflicts_and_merge"><code class="docutils literal notranslate"><span class="pre">resolve_filenames_conflicts_and_merge()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.supervisely_json_to_yolov8">yolov8_dataset_merger.supervisely_json_to_yolov8 module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id32">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_all"><code class="docutils literal notranslate"><span class="pre">json_syntax_to_yolov8_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_file"><code class="docutils literal notranslate"><span class="pre">json_syntax_to_yolov8_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.supervisely_json_to_yolov8.rund"><code class="docutils literal notranslate"><span class="pre">rund()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger.yaml_file_merger">yolov8_dataset_merger.yaml_file_merger module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id35">Module Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36">Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.yaml_file_merger.merge_yaml_files"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.yaml_file_merger.merge_yaml_files_from_folder"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files_from_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov8_dataset_merger.yaml_file_merger.parse_yaml_file"><code class="docutils literal notranslate"><span class="pre">parse_yaml_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-yolov8_dataset_merger">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">YOLOv8 Dataset Merger</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">yolov8_dataset_merger</a></li>
+      <li class="breadcrumb-item active">yolov8_dataset_merger package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/yolov8_dataset_merger.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="yolov8-dataset-merger-package">
+<h1>yolov8_dataset_merger package<a class="headerlink" href="#yolov8-dataset-merger-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-yolov8_dataset_merger.background_images">
+<span id="yolov8-dataset-merger-background-images-module"></span><h2>yolov8_dataset_merger.background_images module<a class="headerlink" href="#module-yolov8_dataset_merger.background_images" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.background_images.background_images">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.background_images.</span></span><span class="sig-name descname"><span class="pre">background_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detector_classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'C:\\Users\\FPepin\\Synology\\TwoWaysSync\\__TU_BERLIN\\_ProjektIAT_Robotergreifer\\perception\\venv\\Lib\\site-packages\\yolov8_dataset_merger\\background_images'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_train_json_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C:\\Users\\FPepin\\Synology\\TwoWaysSync\\__TU_BERLIN\\_ProjektIAT_Robotergreifer\\perception\\venv\\Lib\\site-packages\\yolov8_dataset_merger\\instances_train2017.json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/background_images.html#background_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.background_images.background_images" title="Link to this definition"></a></dt>
+<dd><section id="function-summary">
+<h3>Function Summary<a class="headerlink" href="#function-summary" title="Link to this heading"></a></h3>
+<p>Downloads background images from the COCO dataset, excluding those
+that contain specified classes. The function saves the images and
+blank label files in a specified directory. These background images
+are intended for use in object detection models where they are used
+as negative samples (images without objects of interest, or backgroun
+images).</p>
+<dl class="field-list simple">
+<dt class="field-odd">param detector_classes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of classes to exclude from the</p>
+</dd>
+</dl>
+<p>background images. These are typically
+classes included in training, but in
+special cases, like in tomato detection
+where no class is excluded, the list
+can be empty.
+:type detector_classes: list[str]
+:param number_of_images: The number of background images to download.
+It is recommended to use between 0% and 10%
+background images relative to your dataset.
+:type number_of_images: int
+:param output_dir: The directory where the background images and
+corresponding blank label files will be saved.
+The default directory is “./background_images”.
+:type output_dir: str, optional
+:param instance_train_json_file : json file provided by coco on their
+website ( <a class="reference external" href="https://cocodataset.org/#download">https://cocodataset.org/#download</a> ) containing annotations
+of dataset. Path to this file. default value, place it in the
+script’s directory
+:type output_dir: str, not really optional, must be changed if file is
+changed
+:return: None
+:rtype: NoneType</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The background images are saved to the <cite>output_dir</cite>, along with</dt><dd><p>corresponding blank <cite>.txt</cite> label files for each image.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The function uses the COCO API to retrieve image metadata and</dt><dd><p>downloads the images via their URLs.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p class="rubric">Example</p>
+<p>background_images([“cat”, “dog”], 100)
+This would download 100 images excluding those with “cat” and
+“dog”, and save them in the “./background_images” directory.</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.build_sphinx">
+<span id="yolov8-dataset-merger-build-sphinx-module"></span><h2>yolov8_dataset_merger.build_sphinx module<a class="headerlink" href="#module-yolov8_dataset_merger.build_sphinx" title="Link to this heading"></a></h2>
+<section id="module-summary">
+<span id="module-build_sphinx"></span><h3>Module Summary<a class="headerlink" href="#module-summary" title="Link to this heading"></a></h3>
+<p>This module automates the generation of Sphinx documentation for a
+Python package using the ‘sphinx-apidoc’ command and provides
+utilities to clean up old documentation files before building the new
+documentation. The module also includes functionality to handle the
+execution of a Makefile (or make.bat on Windows) to build the
+documentation in different formats (e.g., HTML, LaTeX).</p>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>‘clean_rst_files(directory: str)’: Deletes all ‘.rst’ files in the
+specified directory, except for ‘index.rst’.</p></li>
+<li><p>‘clean_build_directory(output_dir: str)’: Deletes all contents in
+the ‘_build’ directory, except the directory itself.</p></li>
+<li><p>‘build_documentation(exclude_patterns: list[str], output_dir: str,
+source_dir: str)’: Generates Sphinx documentation using
+‘sphinx-apidoc’ and builds the output in the specified format.</p></li>
+<li><p>‘Makefile(output_dir: str, format: str = ‘html’)’: Runs the
+appropriate Makefile (or make.bat) to generate the documentation in
+the specified format.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<p>To run the script, ensure that <cite>sphinx-apidoc</cite> is installed and
+available in your system’s PATH, then call the <cite>build_documentation()</cite>
+function with your desired parameters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exclude_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;*test*&quot;</span><span class="p">,</span> <span class="s2">&quot;.vscode&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;datasets_to_merge&quot;</span><span class="p">,</span> <span class="s2">&quot;merged_dataset*&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;runs&quot;</span><span class="p">,</span> <span class="s2">&quot;instances_train2017.json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;yolov8n-seg.pt&quot;</span><span class="p">,</span> <span class="s2">&quot;yolov8n.pt&quot;</span><span class="p">]</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\path\to\your\docs&quot;</span>
+<span class="n">source_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\path\to\your\package-or-dir-containg-modules&quot;</span>
+<span class="n">build_documentation</span><span class="p">(</span><span class="n">exclude_patterns</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">source_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>usefull <a class="reference external" href="https://towardsdatascience.com/documenting-python-code-with-sphinx-554e1d6c4f6d">primer tutorial</a></p></li>
+<li><p>‘sphinx-apidoc’ must be installed.</p></li>
+<li><p>‘sphinx’ must be configured in the output directory for building the
+documentation. This can be done with command ‘sphinx-quickstart’.
+Note that after configuration with the sphinx wizard, you’ll
+need to modify the conf.py file in output directory. For consistent
+style and behavior, configure as follow:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configuration file for the Sphinx documentation builder.</span>
+<span class="c1">#</span>
+<span class="c1"># For the full list of built-in configuration values, see the documentation:</span>
+<span class="c1"># https://www.sphinx-doc.org/en/master/usage/configuration.html</span>
+<span class="c1"># -- Path setup --------------------------------------------------------------</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="c1"># -- Project information -----------------------------------------------------</span>
+<span class="c1"># https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information</span>
+
+<span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;YOLOv8 Dataset Merger&#39;</span>
+<span class="n">copyright</span> <span class="o">=</span> <span class="s1">&#39;2024, Frederic Pepin&#39;</span>
+<span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Frederic Pepin&#39;</span>
+<span class="n">release</span> <span class="o">=</span> <span class="s1">&#39;2024-09-30&#39;</span>
+
+<span class="c1"># -- General configuration ---------------------------------------------------</span>
+<span class="c1"># https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration</span>
+
+<span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;sphinx.ext.autodoc&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sphinx.ext.viewcode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sphinx.ext.napoleon&#39;</span>
+<span class="p">]</span>
+
+<span class="n">templates_path</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_templates&#39;</span><span class="p">]</span>
+<span class="n">exclude_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_build&#39;</span><span class="p">,</span> <span class="s1">&#39;Thumbs.db&#39;</span><span class="p">,</span> <span class="s1">&#39;.DS_Store&#39;</span><span class="p">]</span>
+
+<span class="c1"># -- Options for HTML output -------------------------------------------------</span>
+<span class="c1"># https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output</span>
+
+<span class="n">html_theme</span> <span class="o">=</span> <span class="s1">&#39;sphinx_rtd_theme&#39;</span>
+<span class="n">html_static_path</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_static&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.build_sphinx.Makefile">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.build_sphinx.</span></span><span class="sig-name descname"><span class="pre">Makefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'html'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/build_sphinx.html#Makefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.build_sphinx.Makefile" title="Link to this definition"></a></dt>
+<dd><section id="id1">
+<h3>Function Summary<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Execute Makefile independently of OS</p>
+<dl class="field-list simple">
+<dt class="field-odd">param output_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>where documentation will be contained</p>
+</dd>
+<dt class="field-even">type path_to_make_script<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param format<span class="colon">:</span></dt>
+<dd class="field-odd"><p>format to export to, html is default.
+other formats are latexpdf, see sphinx documentation for
+necessary dependencies</p>
+</dd>
+<dt class="field-even">type format<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.build_sphinx.build_documentation">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.build_sphinx.</span></span><span class="sig-name descname"><span class="pre">build_documentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exclude_patterns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'docs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C:\\Users\\FPepin\\Synology\\TwoWaysSync\\__TU_BERLIN\\_ProjektIAT_Robotergreifer\\perception\\venv\\Lib\\site-packages\\yolov8_dataset_merger'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/build_sphinx.html#build_documentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.build_sphinx.build_documentation" title="Link to this definition"></a></dt>
+<dd><section id="id2">
+<h3>Function Summary<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Generates Sphinx documentation using the sphinx-apidoc command.</p>
+<p>This function searches the current working directory for modules
+to be documented (by default) or given source folder. The output is
+saved to the specified directory (defaults to ‘docs’ in the current
+working directory). Specific file patterns can be excluded from the
+documentation generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param exclude_patterns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of patterns to exclude from the
+documentation generation (e.g., test files, configuration folders,
+or non-module files).</p>
+</dd>
+<dt class="field-even">type exclude_patterns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+<dt class="field-odd">param output_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The directory where the generated documentation
+will be saved (defaults to ‘docs’).</p>
+</dd>
+<dt class="field-even">type output_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param source_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The directory of the source code (defaults to the
+current file’s directory).</p>
+</dd>
+<dt class="field-even">type source_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The function changes the working directory to the script’s location</dt><dd><p>before running the <cite>sphinx-apidoc</cite> command.</p>
+</dd>
+</dl>
+</li>
+<li><p>The command output is captured for debugging purposes.</p></li>
+<li><p>in the index.rst file, <em>modules</em> should be appended:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="o">..</span> <span class="n">toctree</span><span class="p">::</span>
+<span class="p">:</span><span class="n">maxdepth</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">:</span><span class="n">caption</span><span class="p">:</span> <span class="n">Contents</span><span class="p">:</span>
+<span class="n">modules</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.build_sphinx.clean_build_directory">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.build_sphinx.</span></span><span class="sig-name descname"><span class="pre">clean_build_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/build_sphinx.html#clean_build_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.build_sphinx.clean_build_directory" title="Link to this definition"></a></dt>
+<dd><section id="id3">
+<h3>Function Summary<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>Deletes all contents of the ‘_build’ directory except the director
+itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param output_directory<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the output directory (docs)
+containing the ‘_build’ directory.</p>
+</dd>
+<dt class="field-even">type output_directory<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.build_sphinx.clean_rst_files">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.build_sphinx.</span></span><span class="sig-name descname"><span class="pre">clean_rst_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/build_sphinx.html#clean_rst_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.build_sphinx.clean_rst_files" title="Link to this definition"></a></dt>
+<dd><section id="id4">
+<h3>Function Summary<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>Deletes all .rst files in the specified directory except ‘index.rst’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param directory<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The directory to search for .rst files.</p>
+</dd>
+<dt class="field-even">type directory<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.change_class_according_to_HSV">
+<span id="yolov8-dataset-merger-change-class-according-to-hsv-module"></span><h2>yolov8_dataset_merger.change_class_according_to_HSV module<a class="headerlink" href="#module-yolov8_dataset_merger.change_class_according_to_HSV" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>Module Summary<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>Module meant to change fruit class based on the color of the detected
+fruit.</p>
+<p>Motivation: some datasets only identify tomatoes as such, without dif-
+ferentiating between ripe and unripe fruits. This is true for a spe-
+cial case, the TomatoOcclusion dataset, which addresses the problematic
+of occlusion of fruits by branches, leaves and other fruits, or a mix
+of all the latters.</p>
+<p>In order to be compatible with other quality datasets (like TomatoLaboro)
+the need arises to characterize the ripeness of Tomatoes.</p>
+<p>Based on the bounding box geometry and position, detect the presence of
+color spectrum (red) in a square box around center point of a bounding
+box (red is ripe). An enhanced approach would be to sample more regions
+in the bounding box, as it could be that a branch / leaf is present at
+middle point. But this also leads to the problem of a false detection
+of red of a ripe tomato behind an unripe one. Detection of partially
+hidden unripe tomatoes will also lead to problems if a red tomato
+overlaps the center of the former. Thus, the detection of occluded
+unripe tomato should be in my opinion left out. It is also less critical
+then the detection of ripe tomatoes in the bigger picture.
+Another stance could also be, falsely characterizing a unripe tomato
+is not critical, because unripe tomatoes continue to ripe also after
+harvest anyway. Therefore, the marginal phenomenon of characterizing
+an occluded unripe tomato as ripe because a red tomato overlaps
+ther region of interest at mid point doesn’t have big repercussions and
+is likely to rarely happen in a given dataset.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.change_class_according_to_HSV.change_class_based_on_color_all">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">change_class_based_on_color_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ripe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unripe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_center_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/change_class_according_to_HSV.html#change_class_based_on_color_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.change_class_according_to_HSV.change_class_based_on_color_all" title="Link to this definition"></a></dt>
+<dd><section id="id6">
+<h3>Function Summary<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>This function processes images of subdirectories “train, test, valid”
+in a given dataset directory to classify bounding boxes of tomatoes
+based on their ripeness by analyzing the color in a Region of Interest
+(ROI) around each bounding box’s center point.
+It updates the class IDs in the label files based on the ripeness
+of each detected tomato.</p>
+<p>The function reads all images and their corresponding label files
+in the specified directory, checks the ripeness of the tomatoes
+inside the bounding boxes using HSV color values, and updates
+the class ID in the label files accordingly. Additionally, it
+generates copies of the images with bounding boxes drawn on them
+for visual verification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param input_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the input directory containing folders
+of images and labels.</p>
+</dd>
+<dt class="field-even">type input_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param output_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the output directory where the modified
+label files and image copies will be saved.
+if value is left out, default behavior creates
+another directory in the parent dataset folder
+called “image_copies_with_bounding_boxes”</p>
+</dd>
+<dt class="field-even">type output_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param ripe<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class ID numberto assign to ripe tomatoes. Default is
+irrelevant, must be changed to fit a given structure in main .yaml
+file</p>
+</dd>
+<dt class="field-even">type ripe<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">param unripe<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class ID to assign to unripe tomatoes.
+Default is irrelevant, must be changed to fit a given structure
+in main .yaml file</p>
+</dd>
+<dt class="field-even">type unripe<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">param ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ratio that defines the size of the
+sampling region for checking ripeness,
+relative to the bounding box size.
+Default is 4.</p>
+</dd>
+<dt class="field-even">type ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>NoneType</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.change_class_according_to_HSV.check_tomato_ripeness">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">check_tomato_ripeness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_normalized</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_normalized</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_width_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_height_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_center_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/change_class_according_to_HSV.html#check_tomato_ripeness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.change_class_according_to_HSV.check_tomato_ripeness" title="Link to this definition"></a></dt>
+<dd><section id="id7">
+<h3>Functíon Summary<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>Determines if a tomato within a bounding box in the image is ripe
+by evaluating the color within the bounding box in the HSV
+color space. The image is sampled around the center of the bounding
+box, and the HSV values of the region are analyzed to check for the
+presence of red, indicating ripeness.</p>
+<p>The function takes normalized coordinates for the center of the
+bounding box and normalized box dimensions, converts them to pixel
+coordinates, and samples a region around the center. The region is
+converted to the HSV color space, and the ripeness is checked by
+determining if any pixels fall within the red color range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param image<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Input image in BGR color space</p>
+</dd>
+<dt class="field-even">type image<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">param x_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized x-coordinate
+for the center of the bounding box.</p>
+</dd>
+<dt class="field-even">type x_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param y_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized y-coordinate
+for the center of the bounding box.</p>
+</dd>
+<dt class="field-even">type y_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param box_width_norm<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized width of the
+bounding box, as a proportion of the image
+width.</p>
+</dd>
+<dt class="field-even">type box_width_norm<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param box_height_norm<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Normalized height of the
+bounding box, as a proportion of the image
+height.</p>
+</dd>
+<dt class="field-even">type box_height_norm<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ratio that determines the size of the
+sample region in relation to the box
+dimensions. The default value is 4,
+meaning the sample region will be 1/4th
+the size of the box.</p>
+</dd>
+<dt class="field-even">type ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A boolean indicating whether the tomato in the region is
+ripe (True) or unripe (False).</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.change_class_according_to_HSV.draw_bounding_boxes">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">draw_bounding_boxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_boxes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_center_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/change_class_according_to_HSV.html#draw_bounding_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.change_class_according_to_HSV.draw_bounding_boxes" title="Link to this definition"></a></dt>
+<dd><section id="id8">
+<h3>Function Summary<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>Draws bounding boxes around objects (tomatoes) in an image based on
+the provided bounding box coordinates, which are in a normalized
+format. In addition to the main bounding box, the function draws a
+smaller square box around the center of each object, sized proportionally
+to the original bounding box (longest edge). This smaller box is used
+for further analysis, such as checking for color or ripeness.</p>
+<p>green rectangles for the main bounding boxes and blue rectangles for
+the smaller boxes around the center points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param image<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The input image on which the bounding boxes will be
+drawn. This image is typically in BGR color space.</p>
+</dd>
+<dt class="field-even">type image<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">param bounding_boxes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of bounding boxes, where each bounding
+box is a list containing the class ID,
+normalized x and y center coordinates,
+and normalized width and height of the box.</p>
+</dd>
+<dt class="field-even">type bounding_boxes<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of lists of strings</p>
+</dd>
+<dt class="field-odd">param ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio that defines the size of the
+smaller box relative to the main bounding
+box. The default value is 4, meaning the
+smaller box will be 1/4th the size of the
+original bounding box.</p>
+</dd>
+<dt class="field-even">type ratio_center_box<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A copy of the input image with the bounding boxes drawn on it.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The normalized coordinates for the bounding boxes are converted</dt><dd><p>to pixel coordinates based on the dimensions of the input image.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The smaller box around the center point is square, and its size</dt><dd><p>is determined by the larger of the two dimensions (width or height)
+of the main bounding box.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.change_class_according_to_HSV.get_pixel_coordinates">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">get_pixel_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/change_class_according_to_HSV.html#get_pixel_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.change_class_according_to_HSV.get_pixel_coordinates" title="Link to this definition"></a></dt>
+<dd><section id="id9">
+<h3>Function Summary<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>compute absolute geometry in pixel sizes out of normalized yolov8
+coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">param x_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type x_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param y_normalized<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type y_normalized<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param image_width<span class="colon">:</span></dt>
+<dd class="field-odd"><p>absolute image width</p>
+</dd>
+<dt class="field-even">type image_width<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param image_height<span class="colon">:</span></dt>
+<dd class="field-odd"><p>absolute image height</p>
+</dd>
+<dt class="field-even">type image_height<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple of (x_pixel, y_pixel), absolute x and y values in the
+coordinate system of the image</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[float]</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.change_class_according_to_HSV.is_ripe_tomato">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.change_class_according_to_HSV.</span></span><span class="sig-name descname"><span class="pre">is_ripe_tomato</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hsv_region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/change_class_according_to_HSV.html#is_ripe_tomato"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.change_class_according_to_HSV.is_ripe_tomato" title="Link to this definition"></a></dt>
+<dd><section id="id10">
+<h3>Function Summary<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>Determines if a given Region of Interest (hsv_region) contains any red
+pixels, indicating ripeness. In this case, hsv_region is a space
+containing the hsv values of each pixel in a given geometrical region.</p>
+<p>Each pixel in the HSV region is checked to see if its HSV values fall
+into either of these ranges. If a pixel’s values fall into one of these
+ranges, the corresponding mask will have a 1 (white) at that pixel’s
+location. If not, the mask will have a 0 (black).</p>
+<dl class="field-list simple">
+<dt class="field-odd">param hsv_region<span class="colon">:</span></dt>
+<dd class="field-odd"><p>image is first transformed to a color space with
+cv2.cvtColor method, and a subspace is created for the Region of
+Interest at center point, which is hsv_region. here, has 3 axes</p>
+</dd>
+<dt class="field-even">type hsv_region<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ripe (True) or unripe (False)</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.common_functions">
+<span id="yolov8-dataset-merger-common-functions-module"></span><h2>yolov8_dataset_merger.common_functions module<a class="headerlink" href="#module-yolov8_dataset_merger.common_functions" title="Link to this heading"></a></h2>
+<section id="id11">
+<h3>Module Summary<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>This module contains utility functions for working with file directories
+and manipulating nested lists. It includes functions to flatten a list
+of lists, create unique directories, change directory permissions,
+and recursively find directories containing specific subfolders
+(“images” and “labels”).</p>
+</section>
+<section id="id12">
+<h3>Functions<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>flatten_list: Flattens a nested list into a single one-dimensional</dt><dd><p>list.</p>
+</dd>
+</dl>
+</li>
+<li><p>mkdir_unique: Creates a unique directory at a specified path.</p></li>
+<li><dl class="simple">
+<dt>change_permissions: Changes the permissions of a directory and its</dt><dd><p>contents recursively.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>find_images_labels_folders: Searches for directories containing</dt><dd><p>“images” or “labels” subfolders.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>count_number_ofimage_and_labels: counts the number of images and</dt><dd><p>labels contained in a dataset (train, test and val all comprised
+together)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">my_module</span> <span class="kn">import</span> <span class="n">flatten_list</span><span class="p">,</span> <span class="n">mkdir_unique</span><span class="p">,</span>
+<span class="go">    find_images_labels_folders</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flattened</span> <span class="o">=</span> <span class="n">flatten_list</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">]],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">flattened</span><span class="p">)</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dir_path</span> <span class="o">=</span> <span class="n">mkdir_unique</span><span class="p">(</span><span class="s2">&quot;my_directory&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">folders</span> <span class="o">=</span> <span class="n">find_images_labels_folders</span><span class="p">(</span><span class="s2">&quot;/path/to/data&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">folders</span><span class="p">)</span>
+<span class="go">[&#39;/path/to/data/folder1&#39;, &#39;/path/to/data/folder2&#39;]</span>
+</pre></div>
+</div>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.common_functions.change_permissions">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.common_functions.</span></span><span class="sig-name descname"><span class="pre">change_permissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">511</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/common_functions.html#change_permissions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.common_functions.change_permissions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.common_functions.count_number_of_image_and_labels">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.common_functions.</span></span><span class="sig-name descname"><span class="pre">count_number_of_image_and_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/common_functions.html#count_number_of_image_and_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.common_functions.count_number_of_image_and_labels" title="Link to this definition"></a></dt>
+<dd><section id="id13">
+<h3>Function Summary<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<p>Counts the total number of images and label files in a dataset
+structured with subdirectories containing “images” and “labels”
+folders. Usefull for debugging and making sure merges have occurred
+without errors</p>
+<dl class="field-list simple">
+<dt class="field-odd">param dataset_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the dataset directory which contains
+subdirectories with “images” and “labels”
+folders.</p>
+</dd>
+<dt class="field-even">type dataset_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing two integers: the total number of images
+and the total number of label files found in the dataset.
+(number_images,number_labels)</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[int, int]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">total_images</span><span class="p">,</span> <span class="n">total_labels</span> <span class="o">=</span> <span class="n">count_number_of_image_and_labels</span><span class="p">(</span><span class="s2">&quot;path/to/dataset&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">total_images</span><span class="p">,</span> <span class="n">total_labels</span><span class="p">)</span>
+<span class="go">(150, 150)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The function assumes that each subdirectory contains a folder named</dt><dd><p>“images” and a folder named “labels”. If these folders are not
+present, the function will skip that subdirectory.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.common_functions.find_images_labels_folders">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.common_functions.</span></span><span class="sig-name descname"><span class="pre">find_images_labels_folders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/common_functions.html#find_images_labels_folders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.common_functions.find_images_labels_folders" title="Link to this definition"></a></dt>
+<dd><section id="id14">
+<h3>Function Summary<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>Recursively searches through a directory to find subfolders named
+“images” or “labels”. When such folders are found, the function
+adds the parent directory containing these subfolders to a list.</p>
+<p>This function is designed to locate directories that contain images
+and labels for further processing in a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path of the directory to search for subfolders.
+The search is performed recursively within all nested
+subdirectories.</p>
+</dd>
+<dt class="field-even">type dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of directories that contain either an “images” or
+“labels” subfolder.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">folders</span> <span class="o">=</span> <span class="n">find_images_labels_folders_nested</span><span class="p">(</span><span class="s2">&quot;/path/to/data&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">folders</span><span class="p">)</span>
+<span class="go">[&#39;/path/to/data/folder1&#39;, &#39;/path/to/data/folder2&#39;]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.common_functions.flatten_list">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.common_functions.</span></span><span class="sig-name descname"><span class="pre">flatten_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_of_lists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/common_functions.html#flatten_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.common_functions.flatten_list" title="Link to this definition"></a></dt>
+<dd><section id="id15">
+<h3>Function Summary<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<p>Flattens a list containing nested lists into a single one-dimensional
+list. If the input is not a list, it returns a list containing the
+input element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param list_of_lists<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list that may contain nested lists. The
+function will recursively flatten any nested
+structures within it.</p>
+</dd>
+<dt class="field-even">type list_of_lists<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A one-dimensional list containing all the elements from
+the input list, including those from any nested lists.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">flatten_list</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">]],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">flatten_list</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">[10]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.common_functions.mkdir_unique">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.common_functions.</span></span><span class="sig-name descname"><span class="pre">mkdir_unique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_dir_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/common_functions.html#mkdir_unique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.common_functions.mkdir_unique" title="Link to this definition"></a></dt>
+<dd><section id="id16">
+<h3>Function Summary<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<p>Creates a new directory at the specified path. If the directory
+already exists, a unique directory name is generated by appending
+an index to the base name, and the new directory is created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param new_dir_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path where the new directory should be
+created. If a directory with this name already
+exists, a unique name will be generated.</p>
+</dd>
+<dt class="field-even">type new_dir_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the newly created directory, whether it is
+the original or the unique one.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mkdir_unique</span><span class="p">(</span><span class="s2">&quot;my_directory&quot;</span><span class="p">)</span>
+<span class="go">&#39;my_directory&#39;  # If it didn&#39;t exist initially</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mkdir_unique</span><span class="p">(</span><span class="s2">&quot;my_directory&quot;</span><span class="p">)</span>
+<span class="go">&#39;my_directory_1&#39;  # If &#39;my_directory&#39; already existed</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box">
+<span id="yolov8-dataset-merger-convert-segmentation-mask-to-bounding-box-module"></span><h2>yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box module<a class="headerlink" href="#module-yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box" title="Link to this heading"></a></h2>
+<section id="id17">
+<h3>Module Summary<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<p>This module provides functionalities to process segmentation masks
+from files, converting them into bounding boxes that conform to
+the YOLO format. It includes functions for reading masks from text
+files, computing bounding box coordinates, and writing the results
+to an output directory.</p>
+</section>
+<section id="id18">
+<h3>Functions<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>convert_mask_to_boundung_box(mask: str) -&gt; str</p></li>
+<li><dl class="simple">
+<dt>process_masks_to_bounding_boxes(input_dir: str,</dt><dd><p>output_dir: str) -&gt; None</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h3>
+<p>To convert mask files to bounding box format, use the
+‘process_masks_to_bounding_boxes’ function, providing the
+input and output directory paths.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.convert_mask_to_boundung_box">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.</span></span><span class="sig-name descname"><span class="pre">convert_mask_to_boundung_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/convert_segmentation_mask_to_bounding_box.html#convert_mask_to_boundung_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.convert_mask_to_boundung_box" title="Link to this definition"></a></dt>
+<dd><section id="id19">
+<h3>Function Summary<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<p>Converts a segmentation mask from a string format to a bounding box
+in YOLO format.</p>
+<p>The segmentation mask directly read from the annotation file is a
+single string, whose values are separated by blank spaces. This
+function first transforms this string into a list of substrings. The
+first integer value is the class number, followed by the
+{x1, y1, x2, y2, …, xn, yn} coordinates pairs of the segmentation
+points. By looping through those values, we can determine the
+extrema of the mask on both axes and define a bounding box in
+YOLO format, namely:
+[class_number, x_center, y_center, width, height].</p>
+<dl class="field-list simple">
+<dt class="field-odd">param mask<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mask directly extracted from .txt file.</p>
+</dd>
+<dt class="field-even">type mask<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string representing the bounding box in YOLO format:
+[class_number (int), x_center (float),
+y_center (float), width (float), height (float)].</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">convert_mask_to_boundung_box</span><span class="p">(</span><span class="s2">&quot;1 50 50 100 100&quot;</span><span class="p">)</span>
+<span class="go">&quot;1 75.0 75.0 50.0 50.0</span>
+<span class="go">&quot;</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.process_masks_to_bounding_boxes">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.</span></span><span class="sig-name descname"><span class="pre">process_masks_to_bounding_boxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/convert_segmentation_mask_to_bounding_box.html#process_masks_to_bounding_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.process_masks_to_bounding_boxes" title="Link to this definition"></a></dt>
+<dd><section id="id20">
+<h3>Function Summary<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<p>Processes all mask files in the input directory, converting each
+mask to a bounding box format and saving the results to the
+specified output directory. Each mask is read from text files,
+and the bounding boxes are calculated using the
+convert_mask_to_boundung_box function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param input_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The directory containing subdirectories of mask
+files to be processed.</p>
+</dd>
+<dt class="field-even">type input_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param output_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The directory where the resulting bounding boxes
+will be saved.</p>
+</dd>
+<dt class="field-even">type output_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.rund">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.</span></span><span class="sig-name descname"><span class="pre">rund</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/convert_segmentation_mask_to_bounding_box.html#rund"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.rund" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.examples">
+<span id="yolov8-dataset-merger-examples-module"></span><h2>yolov8_dataset_merger.examples module<a class="headerlink" href="#module-yolov8_dataset_merger.examples" title="Link to this heading"></a></h2>
+<section id="id21">
+<h3>Module Summary<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<p>Module to show case some miscellaneous pieces of code. Functions are
+nevertheless usable</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.examples.coco_to_yolo">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.examples.</span></span><span class="sig-name descname"><span class="pre">coco_to_yolo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/examples.html#coco_to_yolo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.examples.coco_to_yolo" title="Link to this definition"></a></dt>
+<dd><section id="example-transform-coco-dataset-in-yolov8">
+<h3>Example transform COCO Dataset in YOLOv8<a class="headerlink" href="#example-transform-coco-dataset-in-yolov8" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ultralytics.data.converter</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="n">u</span><span class="o">.</span><span class="n">convert_coco</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;TomatoLaboro\annotations&quot;</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;.\output_labels&quot;</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.examples.main">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.examples.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_all_datasets_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/examples.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.examples.main" title="Link to this definition"></a></dt>
+<dd><section id="dataset-merger-code-example">
+<h3>Dataset Merger Code Example<a class="headerlink" href="#dataset-merger-code-example" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">resolve_filenames_conflicts</span> <span class="kn">import</span> <span class="n">merge_datasets</span>
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">path_to_all_datasets_folder</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;path/to/folder/containing/all/datasets&quot;</span>
+<span class="c1"># output in the script&#39;s directory</span>
+<span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">merge_datasets</span><span class="p">(</span><span class="n">path_to_all_datasets_folder</span><span class="p">,</span><span class="n">output_path</span><span class="p">)</span>
+<span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;execution time: </span><span class="si">{</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="si">:</span><span class="s2">0.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">param path_to_all_datasets_folder<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">type path_to_all_datasets_folder<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.examples.train_model">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.examples.</span></span><span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/examples.html#train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.examples.train_model" title="Link to this definition"></a></dt>
+<dd><section id="train-model-example-code">
+<h3>Train Model Example Code<a class="headerlink" href="#train-model-example-code" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ultralytics</span> <span class="kn">import</span> <span class="n">YOLO</span>
+<span class="c1"># based on a pre-trained yolo omdel</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">YOLO</span><span class="p">(</span><span class="s2">&quot;yolov8n-seg.pt&quot;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;path/to/dataset&quot;</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">param dataset_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">type dataset_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param model<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pre trained model, YOLO(“yolov8n-seg.pt”)</p>
+</dd>
+<dt class="field-even">type model<span class="colon">:</span></dt>
+<dd class="field-even"><p>_type_, optional</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.main">
+<span id="yolov8-dataset-merger-main-module"></span><h2>yolov8_dataset_merger.main module<a class="headerlink" href="#module-yolov8_dataset_merger.main" title="Link to this heading"></a></h2>
+</section>
+<section id="module-yolov8_dataset_merger.map_classes_number">
+<span id="yolov8-dataset-merger-map-classes-number-module"></span><h2>yolov8_dataset_merger.map_classes_number module<a class="headerlink" href="#module-yolov8_dataset_merger.map_classes_number" title="Link to this heading"></a></h2>
+<section id="id22">
+<h3>Module Summary<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<p>This module provides functions to remap class integers in label files
+based on mappings defined in a YAML files. YAML files are expected to
+have been previously automatically remapped with the module
+<em>yaml_file_merger</em> to provide for a clean remapping of each classes ids.
+It is useful when merging datasets that may have conflicting or
+different class numbering/ids.</p>
+</section>
+<section id="id23">
+<h3>Functions<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>replace_class_number_in_file: Remaps class integers in label files
+based on a mapping provided in a list of tuples.</p></li>
+<li><p>replace_remapped_class_number: Replaces class integers in label
+files based on a mapping defined in a remapped YAML file.</p></li>
+<li><p>replace_class_number_from_folder: Replaces class integers in all
+label files found within a specified folder containing multiple
+datasets.</p></li>
+</ul>
+</section>
+<section id="id24">
+<h3>Usage<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<p>This module is intended to be used for preprocessing label files before
+merging datasets to ensure consistent class numbering.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.map_classes_number.replace_class_number_from_folder">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.map_classes_number.</span></span><span class="sig-name descname"><span class="pre">replace_class_number_from_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_containing_datasets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remapped_yaml_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/map_classes_number.html#replace_class_number_from_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.map_classes_number.replace_class_number_from_folder" title="Link to this definition"></a></dt>
+<dd><section id="id25">
+<h3>Function Summary<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<p>Replaces class integers in all label files found within a specified
+folder containing multiple datasets. The class integers are updated
+based on the mapping defined in a given remapped YAML file.
+(see module yaml_file_merger)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the folder that
+contains multiple datasets, each
+having their own
+label files.</p>
+</dd>
+<dt class="field-even">type folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param remapped_yaml_file_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the YAML file that defines
+the remapped class integers.</p>
+</dd>
+<dt class="field-even">type remapped_yaml_file_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param replace<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If True, replaces the original labels with remapped
+ones and deletes the originals. Default is True.</p>
+</dd>
+<dt class="field-even">type replace<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.map_classes_number.replace_class_number_in_file">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.map_classes_number.</span></span><span class="sig-name descname"><span class="pre">replace_class_number_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_new_tuple_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mapped_labels'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/map_classes_number.html#replace_class_number_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.map_classes_number.replace_class_number_in_file" title="Link to this definition"></a></dt>
+<dd><section id="id26">
+<h3>Function Summary<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<p>Remaps class integers in label files based on a mapping provided in
+a list of tuples. This is useful when merging datasets to ensure</p>
+<dl class="field-list simple">
+<dt class="field-odd">param labels_directory<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the directory containing label files
+to be remapped.</p>
+</dd>
+<dt class="field-even">type labels_directory<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param original_new_tuple_list<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of tuples where each tuple
+contains an old class integer and
+its corresponding new class integer.
+(old,new)</p>
+</dd>
+<dt class="field-even">type original_new_tuple_list<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[tuple[int]]</p>
+</dd>
+<dt class="field-odd">param replace<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If True, replaces the original labels directory with
+the remapped one and deletes the original. Default is
+False.</p>
+</dd>
+<dt class="field-even">type replace<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">param output_folder_name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the output folder for the
+remapped labels. If not provided, it
+will be created in the same parent
+directory as labels_directory. Default
+is “mapped_labels”.</p>
+</dd>
+<dt class="field-even">type output_folder_name<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_class_number_in_file</span><span class="p">(</span><span class="s2">&quot;path/to/labels&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                              <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.map_classes_number.replace_remapped_class_number">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.map_classes_number.</span></span><span class="sig-name descname"><span class="pre">replace_remapped_class_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remapped_yaml_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_directories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mapped_labels'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/map_classes_number.html#replace_remapped_class_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.map_classes_number.replace_remapped_class_number" title="Link to this definition"></a></dt>
+<dd><section id="id27">
+<h3>Function Summary<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<p>Replaces class integers in label files based on a mapping defined in
+a remapped YAML file (see module yaml_file_merger). For datasets with
+different class numberings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param remapped_yaml_file_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the YAML file that defines
+the remapped class integers.</p>
+</dd>
+<dt class="field-even">type remapped_yaml_file_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param labels_directories<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of paths to directories containing
+label files to be updated.</p>
+</dd>
+<dt class="field-even">type labels_directories<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+<dt class="field-odd">param replace<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If True, replaces the original labels with remapped
+ones and deletes the originals. Default is False.</p>
+</dd>
+<dt class="field-even">type replace<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">param output_folder_name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the output folder for remapped
+labels. If not provided, it will be
+created in the same parent directory as
+labels_directory. Default is
+“mapped_labels”.</p>
+</dd>
+<dt class="field-even">type output_folder_name<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.resolve_filenames_conflicts">
+<span id="yolov8-dataset-merger-resolve-filenames-conflicts-module"></span><h2>yolov8_dataset_merger.resolve_filenames_conflicts module<a class="headerlink" href="#module-yolov8_dataset_merger.resolve_filenames_conflicts" title="Link to this heading"></a></h2>
+<section id="id28">
+<h3>Module Summary<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
+<p>This module provides functionality to merge multiple datasets that cont-
+ain images and corresponding label files. The datasets are expected to be
+structured in subdirectories for training, testing, and validation, with
+each containing their respective ‘images’ and ‘labels’ directories.</p>
+<p>The module includes functions for resolving filename conflicts during
+the merge process, as well as generating a consolidated YAML file that
+contains class remapping information.</p>
+</section>
+<section id="id29">
+<h3>Functions<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><dl class="simple">
+<dt>resolve_filenames_conflicts_and_merge(path_list: list[str],</dt><dd><p>output_name=None,
+base_directory=None) -&gt; None</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Merges multiple directories containing images and labels, resolving
+filename conflicts by appending suffixes to duplicate filenames.</p></li>
+</ul>
+</li>
+<li><dl class="simple">
+<dt>merge_datasets(path_to_folder_containing_datasets: str,</dt><dd><p>output_dataset_path: str = None) -&gt; None</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Merges datasets from a specified folder into a single dataset,
+organizing the output into subdirectories for training, testing,
+and validation. Creates a merged YAML file containing class
+remapping information.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>yaml_file_merger</cite>: For merging YAML files.</p></li>
+<li><p><cite>map_classes_number</cite>: For remapping class identifiers in label files.</p></li>
+<li><p><cite>common_functions</cite>: For utility functions such as creating unique
+directories.</p></li>
+</ul>
+<p class="rubric">Notes</p>
+<p>Ensure that the datasets being merged follow the expected directory
+structure for the module to function correctly. Typically, this means
+that a yolov8 dataset folder contains a .yaml file containing metadata,
+subfolders called “train”, “test” and “val” or “valid”. These subfolders
+have their own subfolders that should be called “images” and “labels”.
+Any discrepancy in the names will result in failure of the functions.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.resolve_filenames_conflicts.are_there_conflicts">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.resolve_filenames_conflicts.</span></span><span class="sig-name descname"><span class="pre">are_there_conflicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/resolve_filenames_conflicts.html#are_there_conflicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.resolve_filenames_conflicts.are_there_conflicts" title="Link to this definition"></a></dt>
+<dd><p>_summary_
+returns a dictionary of file names that occur more than once in the
+given directory, with filenames as key and
+number of occurences as value
+:param folder: path/to/folder
+:type folder: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.resolve_filenames_conflicts.merge_datasets">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.resolve_filenames_conflicts.</span></span><span class="sig-name descname"><span class="pre">merge_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_folder_containing_datasets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dataset_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/resolve_filenames_conflicts.html#merge_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.resolve_filenames_conflicts.merge_datasets" title="Link to this definition"></a></dt>
+<dd><section id="id30">
+<h3>Function Summary<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<p>Merges multiple datasets contained within a specified folder into a
+single dataset. This function organizes the merged dataset into
+subdirectories for training, testing, and validation. It creates
+a merged .yaml file which contains metadata, most importantly
+class ids and their remapped numbering, with the submodule
+<em>yaml_file_merger</em>. It will then modify the label files to change
+the class ids according the the remapping in the yaml file, with
+submodule <em>map_classes_number</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param path_to_folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the folder
+that contains the individual datasets with their respective
+training, testing, and validation folders, and their yaml file.</p>
+</dd>
+<dt class="field-even">type path_to_folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param output_dataset_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The optional path where the merged
+dataset will be saved. If not provided, the merged dataset will
+be created in the same parent directory as the input datasets.</p>
+</dd>
+<dt class="field-even">type output_dataset_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">merge_datasets</span><span class="p">(</span><span class="s2">&quot;path/to/folder/containing/datasets&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.resolve_filenames_conflicts.resolve_filenames_conflicts_and_merge">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.resolve_filenames_conflicts.</span></span><span class="sig-name descname"><span class="pre">resolve_filenames_conflicts_and_merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/resolve_filenames_conflicts.html#resolve_filenames_conflicts_and_merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.resolve_filenames_conflicts.resolve_filenames_conflicts_and_merge" title="Link to this definition"></a></dt>
+<dd><section id="id31">
+<h3>Function Summary<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<p>Merges multiple directories that contain subdirectories named
+“images” and “labels”. The function resolves filename conflicts
+by appending a suffix to conflicting ones. This is useful for
+consolidating datasets while maintaining unique identifiers.</p>
+<dl class="simple">
+<dt>:param<span class="classifier">must contain subdirectories named “images” and “labels”. Those</span></dt><dd><p>directories are typically “train”, “test” and “val” or “valid”, for
+yolov8</p>
+</dd>
+</dl>
+<p>:type : param path_list: A list of directories to be merged. Each directory
+:param :
+:type : type path_list: list[str]
+:param : provided, a default output directory will be created. This is on the</p>
+<blockquote>
+<div><p>level of “train”, “test” and “valid”</p>
+</div></blockquote>
+<p>:type : param output_name: The name of the output directory. If not
+:param :
+:type : type output_name: str, optional
+:param : directory will be stored. It is the global output merged dataset</p>
+<blockquote>
+<div><p>directory. If not provided, it will default
+to the parent directory of the first images directory.</p>
+</div></blockquote>
+<p>:type : param base_directory: The base directory where the output
+:param :
+:type : type base_directory: str, optional
+:param :
+:type : return: None</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.supervisely_json_to_yolov8">
+<span id="yolov8-dataset-merger-supervisely-json-to-yolov8-module"></span><h2>yolov8_dataset_merger.supervisely_json_to_yolov8 module<a class="headerlink" href="#module-yolov8_dataset_merger.supervisely_json_to_yolov8" title="Link to this heading"></a></h2>
+<section id="id32">
+<h3>Module Summary<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<p>module containing functions to transform JSON Supervisely annotations of
+a dataset to YOLOv8 annotations.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_all">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.supervisely_json_to_yolov8.</span></span><span class="sig-name descname"><span class="pre">json_syntax_to_yolov8_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/supervisely_json_to_yolov8.html#json_syntax_to_yolov8_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_all" title="Link to this definition"></a></dt>
+<dd><section id="id33">
+<h3>Function Summary<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<p>call the parsing function on all files contained in a given input direc-
+tory, write the YOLOv8 formatted data to a .txt file in output directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">param input_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>path to directory containing supervisely annotations</p>
+</dd>
+<dt class="field-even">type input_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param output_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(optional) path to output directory, where to store
+the yolov8 annotations. default behavior, creates a directory
+called ‘yolov8_annoations’ in the parent directory of input_dir</p>
+</dd>
+<dt class="field-even">type output_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_file">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.supervisely_json_to_yolov8.</span></span><span class="sig-name descname"><span class="pre">json_syntax_to_yolov8_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/yolov8_dataset_merger/supervisely_json_to_yolov8.html#json_syntax_to_yolov8_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_file" title="Link to this definition"></a></dt>
+<dd><section id="id34">
+<h3>Function Summary<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<p>takes a supervisely file (JSON format), parses data contained in file,
+and transforms to a yolov8 format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param file_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type file_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of all bounding boxes, each bounding box is a string with
+format ‘&lt;class ID&gt; &lt;normalized x_center&gt; &lt;normalized y_center&gt;
+&lt;normalized box width&gt; &lt;normalized box height&gt;n’</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.supervisely_json_to_yolov8.rund">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.supervisely_json_to_yolov8.</span></span><span class="sig-name descname"><span class="pre">rund</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/supervisely_json_to_yolov8.html#rund"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.supervisely_json_to_yolov8.rund" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger.yaml_file_merger">
+<span id="yolov8-dataset-merger-yaml-file-merger-module"></span><h2>yolov8_dataset_merger.yaml_file_merger module<a class="headerlink" href="#module-yolov8_dataset_merger.yaml_file_merger" title="Link to this heading"></a></h2>
+<section id="id35">
+<h3>Module Summary<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
+<p>This module provides functions to parse and merge YAML files that
+contain class mappings for different datasets. It ensures that improper
+formatting of yaml files is handled, remapping class names to unique
+integers and maintaining a count of the total classes.
+This functionality is especially useful when  combining datasets that
+may have conflicting or different class
+numbering.</p>
+</section>
+<section id="id36">
+<h3>Functions<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>parse_yaml_file: Parses a YAML file, converting the “names” key
+into a dictionary format and ensuring the file’s content is valid
+for further processing.</p></li>
+<li><p>merge_yaml_files: Merges multiple YAML files into a single YAML
+file, remapping class names to unique class integers and updating
+the total class count.</p></li>
+<li><p>merge_yaml_files_from_folder: Merges all YAML files found within
+subdirectories of a specified folder, compiling their contents and
+remapping class names to unique integers.</p></li>
+</ul>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.yaml_file_merger.merge_yaml_files">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.yaml_file_merger.</span></span><span class="sig-name descname"><span class="pre">merge_yaml_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_files_paths_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/yaml_file_merger.html#merge_yaml_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.yaml_file_merger.merge_yaml_files" title="Link to this definition"></a></dt>
+<dd><section id="id37">
+<h3>Function Summary<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
+<p>Merges multiple YAML files that contain class mappings into a single
+YAML file. This function ensures that class names are remapped to
+unique class integers and updates the total class count in the
+output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param yaml_files_paths_list<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of paths to the YAML files
+that need to be merged.</p>
+</dd>
+<dt class="field-even">type yaml_files_paths_list<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+<dt class="field-odd">param output_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The optional path where the merged YAML file
+will be saved. If not provided, it defaults
+to the parent directory of the first dataset.</p>
+</dd>
+<dt class="field-even">type output_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the merged YAML file that was created.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">merged_path</span> <span class="o">=</span> <span class="n">merge_yaml_files</span><span class="p">([</span><span class="s2">&quot;path/to/dataset1/data.yaml&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                                  <span class="s2">&quot;path/to/dataset2/data.yaml&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">merged_path</span><span class="p">)</span>
+<span class="go">&quot;path/to/parent/merged_data.yaml&quot;</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The function assumes that each YAML file contains a “names” key</dt><dd><p>mapping class integers to class names.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If a class name already exists in the output dictionary, it</dt><dd><p>will not be added again.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The total number of classes (‘nc’) is updated in the output</dt><dd><p>YAML file based on the unique class names.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.yaml_file_merger.merge_yaml_files_from_folder">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.yaml_file_merger.</span></span><span class="sig-name descname"><span class="pre">merge_yaml_files_from_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_containing_datasets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/yaml_file_merger.html#merge_yaml_files_from_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.yaml_file_merger.merge_yaml_files_from_folder" title="Link to this definition"></a></dt>
+<dd><section id="id38">
+<h3>Function Summary<a class="headerlink" href="#id38" title="Link to this heading"></a></h3>
+<p>Merges all YAML files found within subdirectories of a specified
+folder into a single YAML file. The function searches for the first
+YAML file in each dataset folder and compiles their contents while
+remapping class names to unique integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the folder that
+contains multiple dataset subdirectories, each expected to
+have a YAML file with class mappings.</p>
+</dd>
+<dt class="field-even">type folder_containing_datasets<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param output_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The optional path where the merged YAML file
+will be saved. If not provided, it defaults to the parent
+directory, namely folder containing all subdatasets.</p>
+</dd>
+<dt class="field-even">type output_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the merged YAML file that was created.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">merged_yaml_path</span> <span class="o">=</span> <span class="n">merge_yaml_files_from_folder</span><span class="p">(</span><span class="s2">&quot;path/to/dataset_folder&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">merged_yaml_path</span><span class="p">)</span>
+<span class="go">&quot;path/to/parent/merged_data.yaml&quot;</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The function expects each subdirectory to contain at least one</dt><dd><p>YAML file. If no YAML file is found, the corresponding folder
+will be skipped.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The merged YAML file will contain unique class mappings from</dt><dd><p>all the input YAML files.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yolov8_dataset_merger.yaml_file_merger.parse_yaml_file">
+<span class="sig-prename descclassname"><span class="pre">yolov8_dataset_merger.yaml_file_merger.</span></span><span class="sig-name descname"><span class="pre">parse_yaml_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/yolov8_dataset_merger/yaml_file_merger.html#parse_yaml_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yolov8_dataset_merger.yaml_file_merger.parse_yaml_file" title="Link to this definition"></a></dt>
+<dd><section id="id39">
+<h3>Function Summary<a class="headerlink" href="#id39" title="Link to this heading"></a></h3>
+<p>Parses a YAML file by removing any tab characters and converting
+the names specified in the file into a dictionary format. This
+function ensures that the resulting content is valid for further
+processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param yaml_file<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The file path to the YAML file that needs to be
+parsed.</p>
+</dd>
+<dt class="field-even">type yaml_file<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the parsed content of the YAML file.
+The “names” key, if initially a list, is transformed into a
+dictionary where the index is the key and the corresponding
+name is the value.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parsed_content</span> <span class="o">=</span> <span class="n">parse_yaml_file</span><span class="p">(</span><span class="s2">&quot;path/to/yaml_file.yaml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">parsed_content</span><span class="p">)</span>
+<span class="go">{&#39;names&#39;: {0: &#39;class_1&#39;, 1: &#39;class_2&#39;, ...}}</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>This function replaces tab characters with double spaces since</dt><dd><p>tabs are not allowed in YAML syntax.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-yolov8_dataset_merger">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-yolov8_dataset_merger" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="yolov8_dataset_merger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Frederic Pepin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

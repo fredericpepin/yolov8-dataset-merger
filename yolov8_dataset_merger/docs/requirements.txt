@@ -2,7 +2,9 @@ alabaster==0.7.16
 Babel==2.15.0
 build==1.2.2
 certifi==2024.6.2
+cffi==1.17.1
 charset-normalizer==3.3.2
+clr-loader==0.2.6
 colorama==0.4.6
 contourpy==1.2.1
 cycler==0.12.1
@@ -11,6 +13,7 @@ docutils==0.20.1
 filelock==3.15.4
 fonttools==4.53.0
 fsspec==2024.6.0
+hatchling==1.25.0
 idna==3.7
 imagesize==1.4.1
 intel-openmp==2021.4.0
@@ -26,15 +29,19 @@ opencv-python==4.10.0.84
 opencv-python-headless==4.10.0.84
 packaging==24.1
 pandas==2.2.2
+pathspec==0.12.1
 pillow==10.3.0
+pluggy==1.5.0
 pockets==0.9.1
 psutil==6.0.0
 py-cpuinfo==9.0.0
 pycocotools==2.0.8
+pycparser==2.22
 Pygments==2.18.0
 pyparsing==3.1.2
 pyproject_hooks==1.2.0
 python-dateutil==2.9.0.post0
+pythonnet==3.0.4
 pytz==2024.1
 PyYAML==6.0.1
 requests==2.32.3
@@ -60,8 +67,10 @@ tia-openness-api-client==0.1.0
 torch==2.3.1
 torchvision==0.18.1
 tqdm==4.66.4
+trove-classifiers==2024.9.12
 typing_extensions==4.12.2
 tzdata==2024.1
 ultralytics==8.2.42
 ultralytics-thop==2.0.0
 urllib3==2.2.2
+yolov8_dataset_merger @ file:///C:/Users/FPepin/Synology/TwoWaysSync/__TU_BERLIN/_ProjektIAT_Robotergreifer/perception/dataset_merger

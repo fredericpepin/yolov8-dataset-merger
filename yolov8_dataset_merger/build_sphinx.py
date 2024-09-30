@@ -183,7 +183,7 @@ Notes
     args= ["sphinx-apidoc", "-o", ]
     args += [output_dir, source_dir]
     args += exclude_patterns
-    
+    print(args)
     # clean old content
     clean_rst_files(output_dir)
     clean_build_directory(output_dir)
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     exclude_patterns = ["*test*", ".vscode", 
             "datasets_to_merge", "merged_dataset*", "runs", 
             "instances_train2017.json", "yolov8n-seg.pt" "yolov8n.pt"]
-    output_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\yolov8_dataset_merger\docs"
-    source_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\yolov8_dataset_merger"
+    output_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\dataset_merger\yolov8_dataset_merger\docs"
+    source_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\dataset_merger\yolov8_dataset_merger"
     build_documentation(exclude_patterns,output_dir,source_dir)
 

@@ -28,8 +28,8 @@ sphinx:
 # Optional but recommended, declare the Python requirements required
 # to build your documentation
 # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
-# python:
-#    install:
-#    - requirements: yolov8_dataset_merger/docs/requirements.txt
-#    - method: pip
-#    - path: .
+python:
+   install:
+     requirements: ./yolov8_dataset_merger/docs/requirements.txt
+     method: pip
+     path: .

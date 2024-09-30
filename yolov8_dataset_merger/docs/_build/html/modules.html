@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dataset_merger &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
+  <title>yolov8_dataset_merger &mdash; YOLOv8 Dataset Merger 2024-09-30 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="background_images module" href="background_images.html" />
+    <link rel="next" title="yolov8_dataset_merger package" href="yolov8_dataset_merger.html" />
     <link rel="prev" title="Welcome to YOLOv8 Dataset Merger’s documentation!" href="index.html" /> 
 </head>
 
@@ -46,18 +46,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">dataset_merger</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="background_images.html">background_images module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html">build_sphinx module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html">change_class_according_to_HSV module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html">common_functions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html">convert_segmentation_mask_to_bounding_box module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html">examples module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html">map_classes_number module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html">resolve_filenames_conflicts module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supervisely_json_to_yolov8.html">supervisely_json_to_yolov8 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="test.html">test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="yaml_file_merger.html">yaml_file_merger module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">yolov8_dataset_merger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html">yolov8_dataset_merger package</a></li>
 </ul>
 </li>
 </ul>
@@ -76,7 +66,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">dataset_merger</li>
+      <li class="breadcrumb-item active">yolov8_dataset_merger</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,91 +76,95 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="dataset-merger">
-<h1>dataset_merger<a class="headerlink" href="#dataset-merger" title="Link to this heading"></a></h1>
+  <section id="yolov8-dataset-merger">
+<h1>yolov8_dataset_merger<a class="headerlink" href="#yolov8-dataset-merger" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="background_images.html">background_images module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="background_images.html#background_images.background_images"><code class="docutils literal notranslate"><span class="pre">background_images()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="yolov8_dataset_merger.html">yolov8_dataset_merger package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.background_images">yolov8_dataset_merger.background_images module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.background_images.background_images"><code class="docutils literal notranslate"><span class="pre">background_images()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="build_sphinx.html">build_sphinx module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html#build_sphinx.Makefile"><code class="docutils literal notranslate"><span class="pre">Makefile()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html#build_sphinx.build_documentation"><code class="docutils literal notranslate"><span class="pre">build_documentation()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html#build_sphinx.clean_build_directory"><code class="docutils literal notranslate"><span class="pre">clean_build_directory()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_sphinx.html#build_sphinx.clean_rst_files"><code class="docutils literal notranslate"><span class="pre">clean_rst_files()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.build_sphinx">yolov8_dataset_merger.build_sphinx module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#module-summary">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.build_sphinx.Makefile"><code class="docutils literal notranslate"><span class="pre">Makefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.build_sphinx.build_documentation"><code class="docutils literal notranslate"><span class="pre">build_documentation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.build_sphinx.clean_build_directory"><code class="docutils literal notranslate"><span class="pre">clean_build_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.build_sphinx.clean_rst_files"><code class="docutils literal notranslate"><span class="pre">clean_rst_files()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="change_class_according_to_HSV.html">change_class_according_to_HSV module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html#change_class_according_to_HSV.change_class_based_on_color_all"><code class="docutils literal notranslate"><span class="pre">change_class_based_on_color_all()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html#change_class_according_to_HSV.check_tomato_ripeness"><code class="docutils literal notranslate"><span class="pre">check_tomato_ripeness()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html#change_class_according_to_HSV.draw_bounding_boxes"><code class="docutils literal notranslate"><span class="pre">draw_bounding_boxes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html#change_class_according_to_HSV.get_pixel_coordinates"><code class="docutils literal notranslate"><span class="pre">get_pixel_coordinates()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="change_class_according_to_HSV.html#change_class_according_to_HSV.is_ripe_tomato"><code class="docutils literal notranslate"><span class="pre">is_ripe_tomato()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.change_class_according_to_HSV">yolov8_dataset_merger.change_class_according_to_HSV module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id5">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.change_class_according_to_HSV.change_class_based_on_color_all"><code class="docutils literal notranslate"><span class="pre">change_class_based_on_color_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.change_class_according_to_HSV.check_tomato_ripeness"><code class="docutils literal notranslate"><span class="pre">check_tomato_ripeness()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.change_class_according_to_HSV.draw_bounding_boxes"><code class="docutils literal notranslate"><span class="pre">draw_bounding_boxes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.change_class_according_to_HSV.get_pixel_coordinates"><code class="docutils literal notranslate"><span class="pre">get_pixel_coordinates()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.change_class_according_to_HSV.is_ripe_tomato"><code class="docutils literal notranslate"><span class="pre">is_ripe_tomato()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="common_functions.html">common_functions module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html#common_functions.change_permissions"><code class="docutils literal notranslate"><span class="pre">change_permissions()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html#common_functions.count_number_of_image_and_labels"><code class="docutils literal notranslate"><span class="pre">count_number_of_image_and_labels()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html#common_functions.find_images_labels_folders"><code class="docutils literal notranslate"><span class="pre">find_images_labels_folders()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html#common_functions.flatten_list"><code class="docutils literal notranslate"><span class="pre">flatten_list()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_functions.html#common_functions.mkdir_unique"><code class="docutils literal notranslate"><span class="pre">mkdir_unique()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.common_functions">yolov8_dataset_merger.common_functions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id11">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id12">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.common_functions.change_permissions"><code class="docutils literal notranslate"><span class="pre">change_permissions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.common_functions.count_number_of_image_and_labels"><code class="docutils literal notranslate"><span class="pre">count_number_of_image_and_labels()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.common_functions.find_images_labels_folders"><code class="docutils literal notranslate"><span class="pre">find_images_labels_folders()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.common_functions.flatten_list"><code class="docutils literal notranslate"><span class="pre">flatten_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.common_functions.mkdir_unique"><code class="docutils literal notranslate"><span class="pre">mkdir_unique()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html">convert_segmentation_mask_to_bounding_box module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html#convert_segmentation_mask_to_bounding_box.convert_mask_to_boundung_box"><code class="docutils literal notranslate"><span class="pre">convert_mask_to_boundung_box()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html#convert_segmentation_mask_to_bounding_box.process_masks_to_bounding_boxes"><code class="docutils literal notranslate"><span class="pre">process_masks_to_bounding_boxes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert_segmentation_mask_to_bounding_box.html#convert_segmentation_mask_to_bounding_box.rund"><code class="docutils literal notranslate"><span class="pre">rund()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box">yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id17">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id18">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.convert_mask_to_boundung_box"><code class="docutils literal notranslate"><span class="pre">convert_mask_to_boundung_box()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.process_masks_to_bounding_boxes"><code class="docutils literal notranslate"><span class="pre">process_masks_to_bounding_boxes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.convert_segmentation_mask_to_bounding_box.rund"><code class="docutils literal notranslate"><span class="pre">rund()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">examples module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#examples.coco_to_yolo"><code class="docutils literal notranslate"><span class="pre">coco_to_yolo()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#examples.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#examples.train_model"><code class="docutils literal notranslate"><span class="pre">train_model()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.examples">yolov8_dataset_merger.examples module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id21">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.examples.coco_to_yolo"><code class="docutils literal notranslate"><span class="pre">coco_to_yolo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.examples.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.examples.train_model"><code class="docutils literal notranslate"><span class="pre">train_model()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="map_classes_number.html">map_classes_number module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html#map_classes_number.replace_class_number_from_folder"><code class="docutils literal notranslate"><span class="pre">replace_class_number_from_folder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html#map_classes_number.replace_class_number_in_file"><code class="docutils literal notranslate"><span class="pre">replace_class_number_in_file()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_classes_number.html#map_classes_number.replace_remapped_class_number"><code class="docutils literal notranslate"><span class="pre">replace_remapped_class_number()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.main">yolov8_dataset_merger.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.map_classes_number">yolov8_dataset_merger.map_classes_number module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id22">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id23">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id24">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.map_classes_number.replace_class_number_from_folder"><code class="docutils literal notranslate"><span class="pre">replace_class_number_from_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.map_classes_number.replace_class_number_in_file"><code class="docutils literal notranslate"><span class="pre">replace_class_number_in_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.map_classes_number.replace_remapped_class_number"><code class="docutils literal notranslate"><span class="pre">replace_remapped_class_number()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="resolve_filenames_conflicts.html">resolve_filenames_conflicts module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html#resolve_filenames_conflicts.are_there_conflicts"><code class="docutils literal notranslate"><span class="pre">are_there_conflicts()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html#resolve_filenames_conflicts.merge_datasets"><code class="docutils literal notranslate"><span class="pre">merge_datasets()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="resolve_filenames_conflicts.html#resolve_filenames_conflicts.resolve_filenames_conflicts_and_merge"><code class="docutils literal notranslate"><span class="pre">resolve_filenames_conflicts_and_merge()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.resolve_filenames_conflicts">yolov8_dataset_merger.resolve_filenames_conflicts module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id28">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id29">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.resolve_filenames_conflicts.are_there_conflicts"><code class="docutils literal notranslate"><span class="pre">are_there_conflicts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.resolve_filenames_conflicts.merge_datasets"><code class="docutils literal notranslate"><span class="pre">merge_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.resolve_filenames_conflicts.resolve_filenames_conflicts_and_merge"><code class="docutils literal notranslate"><span class="pre">resolve_filenames_conflicts_and_merge()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="supervisely_json_to_yolov8.html">supervisely_json_to_yolov8 module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="supervisely_json_to_yolov8.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supervisely_json_to_yolov8.html#supervisely_json_to_yolov8.json_syntax_to_yolov8_all"><code class="docutils literal notranslate"><span class="pre">json_syntax_to_yolov8_all()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="supervisely_json_to_yolov8.html#supervisely_json_to_yolov8.json_syntax_to_yolov8_file"><code class="docutils literal notranslate"><span class="pre">json_syntax_to_yolov8_file()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="supervisely_json_to_yolov8.html#supervisely_json_to_yolov8.rund"><code class="docutils literal notranslate"><span class="pre">rund()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.supervisely_json_to_yolov8">yolov8_dataset_merger.supervisely_json_to_yolov8 module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id32">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_all"><code class="docutils literal notranslate"><span class="pre">json_syntax_to_yolov8_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.supervisely_json_to_yolov8.json_syntax_to_yolov8_file"><code class="docutils literal notranslate"><span class="pre">json_syntax_to_yolov8_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.supervisely_json_to_yolov8.rund"><code class="docutils literal notranslate"><span class="pre">rund()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="test.html">test module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="yaml_file_merger.html">yaml_file_merger module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="yaml_file_merger.html#module-summary">Module Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="yaml_file_merger.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="yaml_file_merger.html#yaml_file_merger.merge_yaml_files"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="yaml_file_merger.html#yaml_file_merger.merge_yaml_files_from_folder"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files_from_folder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="yaml_file_merger.html#yaml_file_merger.parse_yaml_file"><code class="docutils literal notranslate"><span class="pre">parse_yaml_file()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger.yaml_file_merger">yolov8_dataset_merger.yaml_file_merger module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id35">Module Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#id36">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.yaml_file_merger.merge_yaml_files"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.yaml_file_merger.merge_yaml_files_from_folder"><code class="docutils literal notranslate"><span class="pre">merge_yaml_files_from_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="yolov8_dataset_merger.html#yolov8_dataset_merger.yaml_file_merger.parse_yaml_file"><code class="docutils literal notranslate"><span class="pre">parse_yaml_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yolov8_dataset_merger.html#module-yolov8_dataset_merger">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -182,7 +176,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to YOLOv8 Dataset Merger’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="background_images.html" class="btn btn-neutral float-right" title="background_images module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="yolov8_dataset_merger.html" class="btn btn-neutral float-right" title="yolov8_dataset_merger package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
