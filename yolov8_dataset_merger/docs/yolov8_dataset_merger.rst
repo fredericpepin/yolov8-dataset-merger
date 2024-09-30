@@ -52,14 +52,6 @@ yolov8\_dataset\_merger.examples module
    :undoc-members:
    :show-inheritance:
 
-yolov8\_dataset\_merger.main module
------------------------------------
-
-.. automodule:: yolov8_dataset_merger.main
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 yolov8\_dataset\_merger.map\_classes\_number module
 ---------------------------------------------------
 

@@ -423,6 +423,17 @@ Notes
                       (small_x_end, small_y_end), 
                       (255, 0, 0), # Blue color for small box
                       1)  
+        # Add annotation with the class ID
+        # Positioning the text 
+        text_position = (small_x_start + 2, small_y_start + 2)  
+        cv2.putText(image_copy, 
+                    str(class_id),  
+                    text_position, 
+                    cv2.FONT_HERSHEY_SIMPLEX,  
+                    0.5,  # Font scale
+                    (255, 0, 0),  # White color for text
+                    1,  # Thickness of text
+                    cv2.LINE_AA)  # Anti-aliased line
     return image_copy
 
 

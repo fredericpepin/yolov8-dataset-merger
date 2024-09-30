@@ -23,24 +23,24 @@ as negative samples (images without objects of interest, or backgroun
 images).
 
 :param detector_classes: A list of classes to exclude from the 
-background images. These are typically 
-classes included in training, but in 
-special cases, like in tomato detection 
-where no class is excluded, the list 
-can be empty.
+    background images. These are typically 
+    classes included in training, but in 
+    special cases, like in tomato detection 
+    where no class is excluded, the list 
+    can be empty.
 :type detector_classes: list[str]
 :param number_of_images: The number of background images to download. 
-It is recommended to use between 0% and 10% 
-background images relative to your dataset.
+    It is recommended to use between 0% and 10% 
+    background images relative to your dataset.
 :type number_of_images: int
 :param output_dir: The directory where the background images and 
-corresponding blank label files will be saved. 
-The default directory is "./background_images".
+    corresponding blank label files will be saved. 
+    The default directory is "./background_images".
 :type output_dir: str, optional
 :param instance_train_json_file : json file provided by coco on their 
-website ( https://cocodataset.org/#download ) containing annotations
-of dataset. Path to this file. default value, place it in the 
-script's directory
+    website ( https://cocodataset.org/#download ) containing annotations
+    of dataset. Path to this file. default value, place it in the 
+    script's directory
 :type output_dir: str, not really optional, must be changed if file is
 changed
 :return: None
