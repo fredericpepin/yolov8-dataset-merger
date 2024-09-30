@@ -165,14 +165,12 @@
                                           <span class="n">base_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Function Summary</span>
-<span class="sd">=======</span>
+<span class="sd">================</span>
 <span class="sd">Merges multiple directories that contain subdirectories named </span>
 <span class="sd">&quot;images&quot; and &quot;labels&quot;. The function resolves filename conflicts </span>
 <span class="sd">by appending a suffix to conflicting ones. This is useful for </span>
 <span class="sd">consolidating datasets while maintaining unique identifiers.</span>
 
-<span class="sd">Parameters</span>
-<span class="sd">==========</span>
 <span class="sd">:param path_list: A list of directories to be merged. Each directory </span>
 <span class="sd">    must contain subdirectories named &quot;images&quot; and &quot;labels&quot;. Those </span>
 <span class="sd">    directories are typically &quot;train&quot;, &quot;test&quot; and &quot;val&quot; or &quot;valid&quot;, for </span>
@@ -282,7 +280,8 @@
                    <span class="n">output_dataset_path</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function Summary</span>
-<span class="sd">    =======</span>
+<span class="sd">    ================</span>
+<span class="sd">    </span>
 <span class="sd">    Merges multiple datasets contained within a specified folder into a </span>
 <span class="sd">    single dataset. This function organizes the merged dataset into </span>
 <span class="sd">    subdirectories for training, testing, and validation. It creates</span>

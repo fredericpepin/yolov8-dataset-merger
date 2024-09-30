@@ -1448,31 +1448,37 @@ be created in the same parent directory as the input datasets.</p>
 “images” and “labels”. The function resolves filename conflicts
 by appending a suffix to conflicting ones. This is useful for
 consolidating datasets while maintaining unique identifiers.</p>
-<dl class="simple">
-<dt>:param<span class="classifier">must contain subdirectories named “images” and “labels”. Those</span></dt><dd><p>directories are typically “train”, “test” and “val” or “valid”, for
+<dl class="field-list simple">
+<dt class="field-odd">param path_list<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of directories to be merged. Each directory
+must contain subdirectories named “images” and “labels”. Those
+directories are typically “train”, “test” and “val” or “valid”, for
 yolov8</p>
 </dd>
-</dl>
-<p>:type : param path_list: A list of directories to be merged. Each directory
-:param :
-:type : type path_list: list[str]
-:param : provided, a default output directory will be created. This is on the</p>
-<blockquote>
-<div><p>level of “train”, “test” and “valid”</p>
-</div></blockquote>
-<p>:type : param output_name: The name of the output directory. If not
-:param :
-:type : type output_name: str, optional
-:param : directory will be stored. It is the global output merged dataset</p>
-<blockquote>
-<div><p>directory. If not provided, it will default
+<dt class="field-even">type path_list<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+<dt class="field-odd">param output_name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the output directory. If not
+provided, a default output directory will be created. This is on the
+level of “train”, “test” and “valid”</p>
+</dd>
+<dt class="field-even">type output_name<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, optional</p>
+</dd>
+<dt class="field-odd">param base_directory<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The base directory where the output
+directory will be stored. It is the global output merged dataset
+directory. If not provided, it will default
 to the parent directory of the first images directory.</p>
-</div></blockquote>
-<p>:type : param base_directory: The base directory where the output
-:param :
-:type : type base_directory: str, optional
-:param :
-:type : return: None</p>
+</dd>
+<dt class="field-even">type base_directory<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, optional</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
