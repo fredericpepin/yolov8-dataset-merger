@@ -58,9 +58,9 @@ import os
 from collections import Counter
 import shutil as sh
 
-import yaml_file_merger 
-import map_classes_number 
-import common_functions as cf
+from yolov8_dataset_merger import yaml_file_merger 
+from yolov8_dataset_merger import map_classes_number 
+from yolov8_dataset_merger import common_functions as cf
 
 # for debugging
 def are_there_conflicts(folder:str):
@@ -238,7 +238,7 @@ def merge_datasets(path_to_folder_containing_datasets:str,
         # datasets_paths if none was given
         if output_dataset_path is None: 
             output_dataset_path = os.path.join(
-                            os.path.dirname(datasets_paths[0]), 
+                            os.path.dirname(path_to_folder_containing_datasets), 
                             "merged_dataset")
         else: output_dataset_path = output_dataset_path+os.sep+"merged_dataset"
         output_dataset_path = cf.mkdir_unique(output_dataset_path)

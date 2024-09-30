@@ -66,7 +66,7 @@ import shutil as sh
 import cv2
 import numpy as np
 
-import common_functions as udf
+from . import common_functions as udf
 
 # Convert normalized coordinates to pixel values
 def get_pixel_coordinates(x_normalized: float, y_normalized: float, 
@@ -271,7 +271,7 @@ for visual verification.
                                   "image_copies_with_bounding_boxes")
     if os.path.exists(output_dir): sh.rmtree(output_dir)
     os.mkdir(output_dir, mode = 0o777)
-
+    
     for folder in udf.find_images_labels_folders(input_dir):
         images_folder = os.path.join(folder.path, "images")
         labels_folder = os.path.join(folder.path, "labels")
@@ -289,18 +289,6 @@ for visual verification.
                 with open(label_file_path, "r") as f:
                     bounding_boxes = [line.strip().split(" ") 
                                       for line in f.readlines()]
-                # create a copy of the image with th main bounding box
-                # and the region of interest around center point 
-                image_copy = draw_bounding_boxes(cv2.imread(image.path),
-                               bounding_boxes,
-                               ratio_center_box = ratio_center_box)
-                image_copy_name, image_copy_ext = os.path.splitext(image.name)
-                image_copy_path = os.path.join(output_dir, 
-                                               image_copy_name 
-                                               + "-wbbox" 
-                                               + image_copy_ext)
-                # save image with bounding boxes drawn on it
-                cv2.imwrite(image_copy_path, image_copy )
                 
                 # Process each bounding box and checking for ripeness
                 for index in range(len(bounding_boxes)):
@@ -328,8 +316,22 @@ for visual verification.
                 
                 # Write the updated bounding boxes to the label file
                 with open(label_file_path, "w", encoding="utf-8") as f:
-                    print(bounding_boxes)
                     [f.write(bounding_box) for bounding_box in bounding_boxes]       
+
+                bounding_boxes = [box.strip().split(" ") 
+                                      for box in bounding_boxes]
+                # create a copy of the image with th main bounding box
+                # and the region of interest around center point 
+                image_copy = draw_bounding_boxes(cv2.imread(image.path),
+                               bounding_boxes,
+                               ratio_center_box = ratio_center_box)
+                image_copy_name, image_copy_ext = os.path.splitext(image.name)
+                image_copy_path = os.path.join(output_dir, 
+                                               image_copy_name 
+                                               + "-wbbox" 
+                                               + image_copy_ext)
+                # save image with bounding boxes drawn on it
+                cv2.imwrite(image_copy_path, image_copy )
             else:
                 continue
 def draw_bounding_boxes(image: np.ndarray, bounding_boxes:list[list[str]], 

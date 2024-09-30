@@ -205,6 +205,8 @@ Example
                 break
             else:
                 find_images_labels_folders_nested(file) 
+    if os.path.exists(os.path.join(input_dir,"images")):
+        input_dir = os.path.dirname(input_dir)
     find_images_labels_folders_nested(input_dir)
     return folders_containing_images_labels_sub_folders
 

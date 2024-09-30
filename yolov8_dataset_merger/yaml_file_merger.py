@@ -212,13 +212,16 @@ Notes
     yaml_file_list = []
     pattern = re.compile(".yaml$")
     for folder in datasets_folders:
-        # join directory name and yaml file name for a complete path
-        yaml_file = os.path.join(folder,
-                # find first occurence of a file with .yaml extension
-                next((s for s in os.listdir(folder) 
-                      if pattern.search(s)), None)
-        )
-        yaml_file_list.append(yaml_file)
+        try:
+            # join directory name and yaml file name for a complete path
+            yaml_file = os.path.join(folder,
+                    # find first occurence of a file with .yaml extension
+                    next((s for s in os.listdir(folder) 
+                        if pattern.search(s)), None)
+            )
+            yaml_file_list.append(yaml_file)
+        except Exception as e:
+            print(e)
     return merge_yaml_files(yaml_file_list,output_path)
     
     
