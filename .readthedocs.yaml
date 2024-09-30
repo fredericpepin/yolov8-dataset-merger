@@ -32,4 +32,3 @@ python:
    install:
      - requirements: yolov8_dataset_merger/docs/requirements.txt
      - method: pip
-     - path: .
