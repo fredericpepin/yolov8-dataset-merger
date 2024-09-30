@@ -39,7 +39,7 @@ def rund(number, digits=5):
 def convert_mask_to_boundung_box(mask:str):
     """
 Function Summary
-=======
+================
 Converts a segmentation mask from a string format to a bounding box 
 in YOLO format.
 
@@ -102,7 +102,7 @@ def process_masks_to_bounding_boxes(input_dir: str,
                                      output_dir: str):
     """
 Function Summary
-=======
+================
 Processes all mask files in the input directory, converting each 
 mask to a bounding box format and saving the results to the 
 specified output directory. Each mask is read from text files, 

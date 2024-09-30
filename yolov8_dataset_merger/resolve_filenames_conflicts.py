@@ -199,7 +199,8 @@ def merge_datasets(path_to_folder_containing_datasets:str,
                    output_dataset_path:str = None):
     """
     Function Summary
-    =======
+    ================
+    
     Merges multiple datasets contained within a specified folder into a 
     single dataset. This function organizes the merged dataset into 
     subdirectories for training, testing, and validation. It creates

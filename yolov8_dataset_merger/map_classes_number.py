@@ -62,7 +62,7 @@ def replace_class_number_in_file(labels_directory: str,
                                  output_folder_name:str = "mapped_labels" ):
     """
 Function Summary
-=======
+================
 Remaps class integers in label files based on a mapping provided in 
 a list of tuples. This is useful when merging datasets to ensure 
 
@@ -145,7 +145,8 @@ def replace_remapped_class_number(remapped_yaml_file_path:str,
                                   output_folder_name:str = "mapped_labels"):
     """
 Function Summary
-=======
+================
+
 Replaces class integers in label files based on a mapping defined in 
 a remapped YAML file (see module yaml_file_merger). For datasets with 
 different class numberings.
@@ -202,7 +203,8 @@ def replace_class_number_from_folder(folder_containing_datasets:str,
                                      replace=True):
     """
 Function Summary
-=======
+================
+
 Replaces class integers in all label files found within a specified 
 folder containing multiple datasets. The class integers are updated 
 based on the mapping defined in a given remapped YAML file.

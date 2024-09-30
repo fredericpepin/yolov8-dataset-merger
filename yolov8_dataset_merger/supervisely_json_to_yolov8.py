@@ -8,7 +8,7 @@
     .. function: 
         json_syntax_to_yolov8_all(input_dir: str, output_dir: str) -> None
 Module Summary
-=======
+================
 
 module containing functions to transform JSON Supervisely annotations of
 a dataset to YOLOv8 annotations.
@@ -31,7 +31,7 @@ def rund(number:float, digits = 6):
 def json_syntax_to_yolov8_file(file_path: str) -> list[str]:
     """
 Function Summary
-=======
+================
 
 takes a supervisely file (JSON format), parses data contained in file,
 and transforms to a yolov8 format.
@@ -98,7 +98,7 @@ and transforms to a yolov8 format.
 def json_syntax_to_yolov8_all(input_dir: str, output_dir: str = "") -> None:
     """
 Function Summary
-=======
+================
 
 call the parsing function on all files contained in a given input direc-
 tory, write the YOLOv8 formatted data to a .txt file in output directory
