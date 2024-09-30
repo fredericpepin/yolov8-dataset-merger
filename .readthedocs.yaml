@@ -34,4 +34,4 @@ sphinx:
 #      - method: pip
 jobs:
     post_create_environment:
-      - python -m pip install sphinx_rtd_theme
+      - pip install sphinx_rtd_theme
