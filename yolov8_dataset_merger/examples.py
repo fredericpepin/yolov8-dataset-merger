@@ -18,9 +18,9 @@ from ultralytics import YOLO
 
 
 def coco_to_yolo():
-    """
+    r"""
 Example transform COCO Dataset in YOLOv8
-======================================
+========================================
 
 .. code-block::
 

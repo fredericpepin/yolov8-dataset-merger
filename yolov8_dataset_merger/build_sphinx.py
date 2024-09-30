@@ -1,4 +1,4 @@
-"""
+r"""
 .. module:: build_sphinx
 
 Module Summary
@@ -99,7 +99,7 @@ import sys
 import shutil as sh
 
 def clean_rst_files(directory: str):
-    """
+    r"""
     Function Summary
     ================
     
@@ -116,7 +116,7 @@ def clean_rst_files(directory: str):
                 print(f"Deleted: {file_path}")
 
 def clean_build_directory(output_dir: str):
-    """
+    r"""
     Function Summary
     ================
     Deletes all contents of the '_build' directory except the director
@@ -139,7 +139,7 @@ def clean_build_directory(output_dir: str):
 def build_documentation(exclude_patterns: list[str],
                       output_dir: str = "docs", 
                       source_dir = os.path.dirname(__file__)):
-    """
+    r"""
 Function Summary
 ================
 
@@ -196,7 +196,7 @@ Notes
     Makefile(output_dir)
     
 def Makefile(output_dir, format:str = "html"):
-    """
+    r"""
     Function Summary
     ================
     
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     exclude_patterns = ["*test*", ".vscode", 
             "datasets_to_merge", "merged_dataset*", "runs", 
             "instances_train2017.json", "yolov8n-seg.pt" "yolov8n.pt"]
-    output_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\dataset_merger\docs"
-    source_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\dataset_merger"
+    output_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\yolov8_dataset_merger\docs"
+    source_dir = r"C:\Users\FPepin\Synology\TwoWaysSync\__TU_BERLIN\_ProjektIAT_Robotergreifer\perception\yolov8_dataset_merger"
     build_documentation(exclude_patterns,output_dir,source_dir)
 
